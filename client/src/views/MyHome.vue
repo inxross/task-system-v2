@@ -3,6 +3,8 @@
         <h3>Home</h3>
         <button @click="toUsers">Usersのページに行く</button>
         <p>Vuexを用いたcountの値：{{ count }}</p>
+        <button @click="increment">+1</button>
+        <button @click="decrement">-1</button>
     </div>
 </template>
 
@@ -16,6 +18,12 @@ export default {
     methods: {
         toUsers() {
             this.$router.push({path: "users"});
+        },
+        increment() {
+            this.$store.state.count++;
+        },
+        decrement() {
+            this.$store.state.count--;
         }
     }
 }
