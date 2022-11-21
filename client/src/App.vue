@@ -1,15 +1,27 @@
 <template>
-  <div style="width: 700px; margin: auto; padding-top: 50px;">
-    <nav>
-      <router-link to="/" class="link">Home</router-link>
-      <router-link to="/users" class="link">Users</router-link>
-    </nav>
-    <router-view></router-view>
-  </div>
+    <div style="width: 700px; margin: auto; padding-top: 50px;">
+        <Header/>
+        <br>
+        <router-view/>
+        <br>
+        <Footer/>
+    </div>
 </template>
 
-<style scoped>
-  .link {
-    margin-right: 10px;
-  }
-</style>
+<script>
+import Header from '@/global/MyHeader'
+import Footer from '@/global/MyFooter'
+
+export default {
+  name: 'App',
+
+  components: {
+    Header,
+    Footer
+  },
+
+  data: () => ({
+
+  }),
+};
+</script>
