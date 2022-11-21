@@ -23,4 +23,6 @@ Route::get('/mytest', function () {
     ]);
 });
 
-Route::get('/userIndex', 'UserController@index')->name('user.index');
+Route::get('/user/index', 'UserController@index')->name('user.index');
+
+Route::get('/category/index', 'CategoryController@index')->name('category.index');

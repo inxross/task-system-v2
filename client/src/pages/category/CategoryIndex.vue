@@ -36,7 +36,7 @@ export default {
     },
     created() {
         this.axios.get(
-            'http://vue-laravel-separately-tasksystem.localdomain/api/categoryIndex'
+            'http://vue-laravel-separately-tasksystem.localdomain/api/category/index'
         )
         .then(response => {
             console.log(response);
