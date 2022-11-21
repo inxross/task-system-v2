@@ -22,3 +22,5 @@ Route::get('/mytest', function () {
         'person' => ['name' => '太郎', 'kana' => 'タロウ'],
     ]);
 });
+
+Route::get('/userIndex', 'UserController@index')->name('user.index');
