@@ -39,7 +39,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create([
+            'name' => request('category_name'),
+        ]);
     }
 
     /**
