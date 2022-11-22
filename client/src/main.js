@@ -10,7 +10,10 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(VueAxios, Axios, BootstrapVue, IconsPlugin);
+Vue.use(VueAxios, Axios);
+//Vue.use(Axios);
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 
 Vue.config.productionTip = false;
 
