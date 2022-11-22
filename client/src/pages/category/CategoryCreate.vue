@@ -27,7 +27,7 @@ export default {
     methods: {
         register() {
             this.axios.post(
-                'http://vue-laravel-separately-tasksystem.localdomain/api/category/store',
+                '/api/category/store',
                 {
                     category_name: this.createCategoryData.category_name
                 }

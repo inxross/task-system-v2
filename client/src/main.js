@@ -20,5 +20,6 @@ new Vue({
   render: h => h(App),
   created() {
     this.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    this.axios.defaults.baseURL = "http://vue-laravel-separately-tasksystem.localdomain";
   }
 }).$mount('#app');
