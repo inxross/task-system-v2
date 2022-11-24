@@ -3,6 +3,11 @@
         <div class="card-header">カテゴリー管理画面</div>
 
         <div class="card-body">
+
+            <button v-on:click="create" class="btn btn-outline-primary">
+                新規登録
+            </button>
+
             <table class="table table-hover my-2">
                 <thead>
                     <tr>
@@ -43,6 +48,13 @@ export default {
             this.categories = response.data.categories;
         });
     },
+    methods: {
+        create() {
+            this.$router.push({
+                name: "CategoryCreate"
+            });
+        }
+    }
 
 }
 </script>

@@ -19,7 +19,7 @@ export default new Router({
         {path: '/user/index', component: UserIndex},
 
         {path: '/category/index', component: CategoryIndex},
-        {path: '/category/create', component: CategoryCreate},
+        {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},
 
         {path: '/mytest', component: Test},
         {path: '*', redirect: '/'},
