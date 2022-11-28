@@ -3,6 +3,11 @@
         <div class="card-header">カテゴリー管理画面</div>
 
         <div class="card-body">
+
+            <button v-on:click="create" class="btn btn-outline-primary">
+                新規登録
+            </button>
+
             <table class="table table-hover my-2">
                 <thead>
                     <tr>
@@ -17,7 +22,7 @@
                 <tr>
                     <th>{{category.id}}</th>
                     <td>{{category.name}}</td>
-                    <td><a class="btn btn-outline-success" href="#" role="button">編集</a></td>
+                    <td><button class="btn btn-outline-success" @click="goEdit(category.id)">編集</button></td>
                     <td><a class="btn btn-outline-danger" href="#" role="button">削除</a></td>
                     <td>{{category.updated_at}}</td>
                 </tr>
@@ -29,20 +34,28 @@
 
 <script>
 export default {
-    data() {
-        return {
-            categories: [],
-        };
+
+    computed: {
+        categories() {
+            return this.$store.getters.categoryList;
+        }
     },
     created() {
-        this.axios.get(
-            'http://vue-laravel-separately-tasksystem.localdomain/api/category/index'
-        )
-        .then(response => {
-            console.log(response);
-            this.categories = response.data.categories;
-        });
+        this.$store.dispatch('updateCategoryList');
     },
+    methods: {
+        create() {
+            this.$router.push({
+                name: "CategoryCreate"
+            });
+        },
+        goEdit(id) {
+            this.$router.push({
+                name: "CategoryEdit",
+                params: { id: id}
+            })
+        }
+    }
 
 }
 </script>

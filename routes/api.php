@@ -23,6 +23,13 @@ Route::get('/mytest', function () {
     ]);
 });
 
-Route::get('/user/index', 'UserController@index')->name('user.index');
+Route::group(['prefix' => 'user'], function(){
+    Route::get('index', 'UserController@index')->name('user.index');
+});
 
-Route::get('/category/index', 'CategoryController@index')->name('category.index');
+Route::group(['prefix' => 'category'], function(){
+    Route::get('index', 'CategoryController@index')->name('category.index');
+    Route::post('store', 'CategoryController@store')->name('category.store');
+    Route::post('update','CategoryController@update')->name('category.update');   //依存性の注入
+});
+

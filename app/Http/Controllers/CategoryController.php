@@ -39,7 +39,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create([
+            'name' => request('category_name'),
+        ]);
     }
 
     /**
@@ -71,9 +73,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update()
     {
-        //
+        $id = request('id');
+        $category = Category::find($id);
+
+        $category->name = request('category_name');
+
+        $category->save();
+
     }
 
     /**
