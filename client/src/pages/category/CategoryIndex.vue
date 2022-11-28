@@ -34,19 +34,14 @@
 
 <script>
 export default {
-    data() {
-        return {
-            categories: [],
-        };
+
+    computed: {
+        categories() {
+            return this.$store.getters.categoryList;
+        }
     },
     created() {
-        this.axios.get(
-            '/api/category/index'
-        )
-        .then(response => {
-            console.log(response);
-            this.categories = response.data.categories;
-        });
+        this.$store.dispatch('updateCategoryList');
     },
     methods: {
         create() {
