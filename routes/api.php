@@ -30,6 +30,7 @@ Route::group(['prefix' => 'user'], function(){
 Route::group(['prefix' => 'category'], function(){
     Route::get('index', 'CategoryController@index')->name('category.index');
     Route::post('store', 'CategoryController@store')->name('category.store');
-    Route::post('update','CategoryController@update')->name('category.update');   //依存性の注入
+    Route::post('update','CategoryController@update')->name('category.update');
+    Route::post('destroy','CategoryController@destroy')->name('category.destroy');
 });
 

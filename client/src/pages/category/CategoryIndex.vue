@@ -23,7 +23,7 @@
                     <th>{{category.id}}</th>
                     <td>{{category.name}}</td>
                     <td><button class="btn btn-outline-success" @click="goEdit(category.id)">編集</button></td>
-                    <td><a class="btn btn-outline-danger" href="#" role="button">削除</a></td>
+                    <td><button class="btn btn-outline-danger" @click="goDestroy(category.id)">削除</button></td>
                     <td>{{category.updated_at}}</td>
                 </tr>
                 </tbody>
@@ -54,7 +54,13 @@ export default {
                 name: "CategoryEdit",
                 params: { id: id}
             })
-        }
+        },
+        goDestroy(id) {
+            this.$router.push({
+                name: "CategoryDestroy",
+                params: { id: id}
+            })
+        },
     }
 
 }
