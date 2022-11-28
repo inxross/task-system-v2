@@ -8,6 +8,7 @@ import UserCreate from "@/pages/user/UserCreate.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
 import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 import CategoryEdit from "@/pages/category/CategoryEdit.vue";
+import CategoryDestroy from "@/pages/category/CategoryDestroy.vue";
 
 
 Vue.use(Router);
@@ -24,6 +25,7 @@ export default new Router({
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},
         {path: '/category/edit/:id', component: CategoryEdit, name: 'CategoryEdit'},
+        {path: '/category/destroy/:id', component: CategoryDestroy, name: 'CategoryDestroy'},
 
         {path: '/mytest', component: Test},
         {path: '*', redirect: '/'},
