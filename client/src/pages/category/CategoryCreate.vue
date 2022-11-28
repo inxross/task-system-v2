@@ -6,13 +6,11 @@
                 <div class="card-header">カテゴリー新規作成画面</div>
 
                 <div class="card-body">
-                    <form @submit='register'>
                         カテゴリ名<br>
                         <input type="text" class="form-control" name="category_name" v-model="createCategoryData.category_name">
                         <br>
                         <br>
-                        <input class="btn btn-info" type="submit" value="登録する">
-                    </form>
+                        <button class="btn btn-info" @click="register">登録する</button>
                     <!-- {{createCategoryData}} -->
                 </div>
             </div>
@@ -22,6 +20,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         register() {
-            this.axios.post(
+            axios.post(
                 '/api/category/store',
                 {
                     category_name: this.createCategoryData.category_name
@@ -40,6 +40,9 @@ export default {
             )
             .then(response => {
                 console.log(response);
+                this.$router.push({
+                    name: "CategoryIndex"
+                });
             });
 
             this.createCategoryData.category_name = '';
