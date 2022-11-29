@@ -3,11 +3,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card border-success">
-                <div class="card-header">カテゴリー編集画面</div>
+                <div class="card-header">ステータス編集画面</div>
 
                 <div class="card-body">
-                        カテゴリ名<br>
-                        <input type="text" class="form-control" name="category_name" v-model="category.name">
+                        ステータス名<br>
+                        <input type="text" class="form-control" name="status_name" v-model="status.name">
                         <br>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
@@ -26,10 +26,10 @@ import axios from 'axios';
 
 export default {
     computed: {
-        category() {
+        status() {
             //const dataId = parseInt(this.$route.params.id, 10);
             const dataId = this.$route.params.id;
-            const data = this.$store.getters.categoryList.find(a => (
+            const data = this.$store.state.statusList.find(a => (
                 a.id === dataId
             ));
             return data;
@@ -38,16 +38,16 @@ export default {
     methods: {
         update() {
             axios.post(
-                '/api/category/update',
+                '/api/status/update',
                 {
-                    category_name: this.category.name,
-                    id: this.category.id
+                    status_name: this.status.name,
+                    id: this.status.id
                 }
             )
             .then(response => {
                 console.log(response);
                 this.$router.push({
-                    name: "CategoryIndex"
+                    name: "StatusIndex"
                 });
             });
 

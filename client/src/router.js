@@ -9,6 +9,10 @@ import CategoryIndex from "@/pages/category/CategoryIndex.vue";
 import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 import CategoryEdit from "@/pages/category/CategoryEdit.vue";
 import CategoryDestroy from "@/pages/category/CategoryDestroy.vue";
+import StatusIndex from "@/pages/status/StatusIndex.vue";
+import StatusCreate from "@/pages/status/StatusCreate.vue";
+import StatusEdit from "@/pages/status/StatusEdit.vue";
+import StatusDestroy from "@/pages/status/StatusDestroy.vue";
 
 
 Vue.use(Router);
@@ -26,6 +30,11 @@ export default new Router({
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},
         {path: '/category/edit/:id', component: CategoryEdit, name: 'CategoryEdit'},
         {path: '/category/destroy/:id', component: CategoryDestroy, name: 'CategoryDestroy'},
+
+        {path: '/status/index', component: StatusIndex, name: 'StatusIndex'},
+        {path: '/status/create', component: StatusCreate, name: 'StatusCreate'},
+        {path: '/status/edit/:id', component: StatusEdit, name: 'StatusEdit'},
+        {path: '/status/destroy/:id', component: StatusDestroy, name: 'StatusDestroy'},
 
         {path: '/mytest', component: Test},
         {path: '*', redirect: '/'},
