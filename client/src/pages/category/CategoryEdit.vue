@@ -29,7 +29,7 @@ export default {
         category() {
             //const dataId = parseInt(this.$route.params.id, 10);
             const dataId = this.$route.params.id;
-            const data = this.$store.state.categoryList.find(a => (
+            const data = this.$store.getters.categoryList.find(a => (
                 a.id === dataId
             ));
             return data;
