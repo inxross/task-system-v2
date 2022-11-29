@@ -39,7 +39,9 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $status = Status::create([
+            'name' => request('status_name'),
+        ]);
     }
 
     /**
