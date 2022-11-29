@@ -34,3 +34,7 @@ Route::group(['prefix' => 'category'], function(){
     Route::post('destroy','CategoryController@destroy')->name('category.destroy');
 });
 
+Route::group(['prefix' => 'status'], function(){
+    Route::get('index', 'StatusController@index')->name('status.index');
+});
+
