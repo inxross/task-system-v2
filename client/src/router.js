@@ -23,7 +23,7 @@ export default new Router({
         {path: '/', component: TaskIndex},
         {path: '/task/create', component: TaskCreate},
 
-        {path: '/user/index', component: UserIndex},
+        {path: '/user/index', component: UserIndex, name: "UserIndex"},
         {path: '/user/create', component: UserCreate},
 
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
