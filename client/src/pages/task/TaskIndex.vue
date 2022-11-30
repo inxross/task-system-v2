@@ -22,9 +22,9 @@
                 <tbody v-for="task in tasks" :key="task.id">
                 <tr>
                     <th>{{task.id}}</th>
-                    <th>{{task.status.name}}</th>
+                    <th>{{task.status ? task.status.name : ''}}</th>
                     <td>{{task.name}}</td>
-                    <td>{{task.work_user.name}}</td>
+                    <td>{{task.work_user ? task.work_user.name : ''}}</td>
                     <td>{{task.deadline}}</td>
                     <td>{{task.updated_at}}</td>
                 </tr>

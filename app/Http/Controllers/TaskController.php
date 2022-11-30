@@ -39,7 +39,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task = Task::create([
+            'name' => request('createTaskData.task_name'),
+            'description' => request('createTaskData.description'),
+            'work_user' => request('createTaskData.work_user'),
+            'category_id' => request('createTaskData.category'),
+            'status_id' => request('createTaskData.status'),
+            'deadline' => request('createTaskData.deadline'),
+        ]);
     }
 
     /**

@@ -20,8 +20,8 @@ Vue.use(Router);
 export default new Router({
     mode: "history",
     routes: [
-        {path: '/', component: TaskIndex},
-        {path: '/task/create', component: TaskCreate},
+        {path: '/', component: TaskIndex, name: "TaskIndex"},
+        {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
 
         {path: '/user/index', component: UserIndex, name: "UserIndex"},
         {path: '/user/create', component: UserCreate},
