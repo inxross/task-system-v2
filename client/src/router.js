@@ -26,7 +26,7 @@ export default new Router({
         {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
 
         {path: '/user/index', component: UserIndex, name: "UserIndex"},
-        {path: '/user/create', component: UserCreate},
+        {path: '/user/create', component: UserCreate, name: "UserCreate"},
 
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},
