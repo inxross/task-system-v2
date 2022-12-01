@@ -25,6 +25,7 @@ Route::get('/mytest', function () {
 
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
+    Route::post('store', 'UserController@store')->name('user.store');
 });
 
 Route::group(['prefix' => 'category'], function(){
@@ -39,5 +40,10 @@ Route::group(['prefix' => 'status'], function(){
     Route::post('store', 'StatusController@store')->name('status.store');
     Route::post('update','StatusController@update')->name('status.update');
     Route::post('destroy','StatusController@destroy')->name('status.destroy');
+});
+
+Route::group(['prefix' => 'task'], function(){
+    Route::get('index', 'TaskController@index')->name('task.index');
+    Route::post('store', 'TaskController@store')->name('task.store');
 });
 

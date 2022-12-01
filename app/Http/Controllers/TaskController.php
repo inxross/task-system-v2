@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use Illuminate\Support\Facades\Hash;
+use App\Task;
 
-class UserController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $tasks = Task::with(['status', 'category', 'adminUser', 'workUser'])->get();
 
         return response()->json([
-            'users' => $users,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -40,10 +39,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => request('createUserData.user_name'),
-            'email' => request('createUserData.email'),
-            'password' => Hash::make(request('createUserData.password')),
+        $task = Task::create([
+            'name' => request('createTaskData.task_name'),
+            'description' => request('createTaskData.description'),
+            'work_user' => request('createTaskData.work_user'),
+            'category_id' => request('createTaskData.category'),
+            'status_id' => request('createTaskData.status'),
+            'deadline' => request('createTaskData.deadline'),
         ]);
     }
 

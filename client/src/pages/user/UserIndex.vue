@@ -3,6 +3,11 @@
         <div class="card-header">ユーザー管理画面</div>
 
         <div class="card-body">
+
+            <button v-on:click="create" class="btn btn-outline-primary">
+                新規登録
+            </button>
+
             <table class="table table-hover my-2">
                 <thead>
                     <tr>
@@ -14,13 +19,13 @@
                     </tr>
                 </thead>
                 <tbody v-for="user in users" :key="user.id">
-                    <tr>
+                <tr>
                     <th>{{user.id}}</th>
                     <td>{{user.name}}</td>
-                    <td><a class="btn btn-outline-success" href="#" role="button">編集</a></td>
-                    <td><a class="btn btn-outline-danger" href="#" role="button">削除</a></td>
+                    <td><button class="btn btn-outline-success" @click="goEdit(user.id)">編集</button></td>
+                    <td><button class="btn btn-outline-danger" @click="goDestroy(user.id)">削除</button></td>
                     <td>{{user.updated_at}}</td>
-                    </tr>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -29,19 +34,34 @@
 
 <script>
 export default {
-    data() {
-        return {
-            users: [],
-        };
+
+    computed: {
+        users() {
+            return this.$store.getters.userList;
+        }
     },
     created() {
-        this.axios.get(
-            'http://vue-laravel-separately-tasksystem.localdomain/api/user/index'
-        )
-        .then(response => {
-            this.users = response.data.users;
-        });
+        this.$store.dispatch('updateUserList');
     },
+    methods: {
+        create() {
+            this.$router.push({
+                name: "UserCreate"
+            });
+        },
+        goEdit(id) {
+            this.$router.push({
+                name: "UserEdit",
+                params: { id: id}
+            })
+        },
+        goDestroy(id) {
+            this.$router.push({
+                name: "UserDestroy",
+                params: { id: id}
+            })
+        },
+    }
 
 }
 </script>
