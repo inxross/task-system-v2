@@ -2,7 +2,7 @@
     <div>
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-nav>
-            <b-navbar-brand class="mx-3" href="#">task_system</b-navbar-brand>
+            <b-navbar-brand class="mx-3" :to="{ name: 'TaskIndex' }">task_system</b-navbar-brand>
             </b-navbar-nav>
 
             <!-- Navbar dropdowns -->
