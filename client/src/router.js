@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Test from "./views/MyTest.vue";
 import TaskIndex from "@/pages/task/TaskIndex.vue";
 import TaskCreate from "@/pages/task/TaskCreate.vue";
+import TaskShow from "@/pages/task/TaskShow.vue";
 import UserIndex from "@/pages/user/UserIndex.vue";
 import UserCreate from "@/pages/user/UserCreate.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
@@ -22,6 +23,7 @@ export default new Router({
     routes: [
         {path: '/', component: TaskIndex, name: "TaskIndex"},
         {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
+        {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
 
         {path: '/user/index', component: UserIndex, name: "UserIndex"},
         {path: '/user/create', component: UserCreate},

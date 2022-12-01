@@ -20,9 +20,9 @@
                     </tr>
                 </thead>
                 <tbody v-for="task in tasks" :key="task.id">
-                <tr>
-                    <th>{{task.id}}</th>
-                    <th>{{task.status ? task.status.name : ''}}</th>
+                <tr  @click="goShow(task.id)">
+                    <td>{{task.id}}</td>
+                    <td>{{task.status ? task.status.name : ''}}</td>
                     <td>{{task.name}}</td>
                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                     <td>{{task.deadline}}</td>
@@ -51,15 +51,9 @@ export default {
                 name: "TaskCreate"
             });
         },
-        goEdit(id) {
+        goShow(id) {
             this.$router.push({
-                name: "TaskEdit",
-                params: { id: id}
-            })
-        },
-        goDestroy(id) {
-            this.$router.push({
-                name: "TaskDestroy",
+                name: "TaskShow",
                 params: { id: id}
             })
         },
