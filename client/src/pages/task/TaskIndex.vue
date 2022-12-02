@@ -36,10 +36,35 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            tasks: [],
+        };
+    },
     computed: {
-        tasks() {
+        computedTasks() {
             return this.$store.getters.taskList;
+        }
+    },
+    watch: {
+        $route(to) {
+            console.log(to.query.category);
+            console.log(this.computedTasks);
+            console.log(to);
+
+            if (to.query.caterory == null) {
+                const dataId = this.$route.query.category;
+                const data = this.computedTasks.filter( function(a) {
+                    return a.category_id == dataId;
+                })
+
+                console.log('if文の処理');
+                console.log(data);
+                this.tasks = data;
+            } else {
+                this.tasks = this.computedTasks;
+                console.log('else文の処理');
+            }
         }
     },
     created() {
