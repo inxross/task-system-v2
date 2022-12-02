@@ -3,6 +3,12 @@
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-nav>
             <b-navbar-brand class="mx-3" :to="{ name: 'TaskIndex' }">task_system</b-navbar-brand>
+            <div class="form-inline" v-show="this.$route.name === 'TaskIndex'">
+                <select class="mt-2">
+                    <option value="">カテゴリ選択</option>
+                    <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
+                </select>
+            </div>
             </b-navbar-nav>
 
             <!-- Navbar dropdowns -->
@@ -24,7 +30,15 @@
 
 <script>
 export default {
-
+    computed: {
+        categories() {
+            return this.$store.getters.categoryList;
+        },
+    },
+    created() {
+        this.$store.dispatch('updateCategoryList');
+        console.log(this.$route.name);
+    },
 }
 </script>
 
