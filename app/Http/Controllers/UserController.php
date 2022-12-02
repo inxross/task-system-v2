@@ -87,6 +87,16 @@ class UserController extends Controller
         $user->save();
     }
 
+    public function passwordUpdate(Request $request)
+    {
+        $id = request('id');
+        $user = User::find($id);
+
+        $user->password = Hash::make(request('createUserData.password'));
+
+        $user->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

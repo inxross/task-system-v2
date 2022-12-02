@@ -27,6 +27,7 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
     Route::post('update','UserController@update')->name('user.update');
+    Route::post('passwordUpdate','UserController@passwordUpdate')->name('user.passwordUpdate');
 });
 
 Route::group(['prefix' => 'category'], function(){

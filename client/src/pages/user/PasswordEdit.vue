@@ -4,23 +4,22 @@
         <div class="col-md-8">
             <div class="card border-success">
                 <div class="card-header">
-                    ユーザー編集画面
-                    <div style="text-align: right;">
-                        <button @click="goPasswordEdit(user.id)" class="btn btn-outline-success btn-sm text-right">パスワード編集</button>
-                    </div>
+                    パスワード編集画面
                 </div>
 
                 <div class="card-body">
-                        ユーザー名<br>
-                        <input type="text" class="form-control" name="user_name" v-model="user.name">
+                        ユーザー名：{{user.name}}
                         <br>
-                        メールアドレス<br>
-                        <input type="email" class="form-control" name="email" v-model="user.email">
+                        <br>
+                        Password<br>
+                        <input type="password" class="form-control" name="password" v-model="user.password">
+                        Password確認<br>
+                        <input type="password" class="form-control" name="password_confirmation" v-model="user.password_confirmation">
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
-                    <!--{{user.name}}
+                    <!-- {{user.password}}
                     <br>
-                    {{user.id}} -->
+                    {{user.password_confirmation}} -->
                 </div>
             </div>
         </div>
@@ -45,10 +44,10 @@ export default {
     methods: {
         update() {
             axios.post(
-                '/api/user/update',
+                '/api/user/passwordUpdate',
                 {
-                    user_name: this.user.name,
-                    email: this.user.email,
+                    password: this.user.password,
+                    password_confirmation: this.user.password_confirmation,
                     id: this.user.id
                 }
             )
