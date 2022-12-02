@@ -26,6 +26,7 @@ Route::get('/mytest', function () {
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
+    Route::post('update','UserController@update')->name('user.update');
 });
 
 Route::group(['prefix' => 'category'], function(){

@@ -76,9 +76,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = request('id');
+        $user = User::find($id);
+
+        $user->name = request('user_name');
+        $user->email = request('email');
+
+        $user->save();
     }
 
     /**

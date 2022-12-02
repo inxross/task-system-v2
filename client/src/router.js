@@ -6,6 +6,7 @@ import TaskCreate from "@/pages/task/TaskCreate.vue";
 import TaskShow from "@/pages/task/TaskShow.vue";
 import UserIndex from "@/pages/user/UserIndex.vue";
 import UserCreate from "@/pages/user/UserCreate.vue";
+import UserEdit from "@/pages/user/UserEdit.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
 import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 import CategoryEdit from "@/pages/category/CategoryEdit.vue";
@@ -27,6 +28,7 @@ export default new Router({
 
         {path: '/user/index', component: UserIndex, name: "UserIndex"},
         {path: '/user/create', component: UserCreate, name: "UserCreate"},
+        {path: '/user/edit/:id', component: UserEdit, name: "UserEdit"},
 
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},
