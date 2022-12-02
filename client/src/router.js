@@ -8,6 +8,7 @@ import UserIndex from "@/pages/user/UserIndex.vue";
 import UserCreate from "@/pages/user/UserCreate.vue";
 import UserEdit from "@/pages/user/UserEdit.vue";
 import PasswordEdit from "@/pages/user/PasswordEdit.vue";
+import UserDestroy from "@/pages/user/UserDestroy.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
 import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 import CategoryEdit from "@/pages/category/CategoryEdit.vue";
@@ -31,6 +32,7 @@ export default new Router({
         {path: '/user/create', component: UserCreate, name: "UserCreate"},
         {path: '/user/edit/:id', component: UserEdit, name: "UserEdit"},
         {path: '/user/edit/password/:id', component: PasswordEdit, name: "PasswordEdit"},
+        {path: '/user/destroy/:id', component: UserDestroy, name: 'UserDestroy'},
 
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},

@@ -103,8 +103,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        $id = request('id');
+        $category = User::find($id);
+
+        $category->delete();
     }
 }
