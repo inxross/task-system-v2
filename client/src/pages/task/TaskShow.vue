@@ -60,8 +60,8 @@
 export default {
     computed: {
         task() {
-            //const dataId = parseInt(this.$route.params.id, 10);
-            const dataId = this.$route.params.id;
+            const dataId = parseInt(this.$route.params.id, 10);
+            //const dataId = this.$route.params.id;
             const data = this.$store.getters.taskList.find(a => (
                 a.id === dataId
             ));

@@ -27,9 +27,9 @@ import axios from 'axios';
 export default {
     computed: {
         status() {
-            //const dataId = parseInt(this.$route.params.id, 10);
-            const dataId = this.$route.params.id;
-            const data = this.$store.state.statusList.find(a => (
+            const dataId = parseInt(this.$route.params.id, 10);
+            //const dataId = this.$route.params.id;
+            const data = this.$store.getters.statusList.find(a => (
                 a.id === dataId
             ));
             return data;
