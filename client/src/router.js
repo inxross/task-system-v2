@@ -9,6 +9,7 @@ import UserCreate from "@/pages/user/UserCreate.vue";
 import UserEdit from "@/pages/user/UserEdit.vue";
 import PasswordEdit from "@/pages/user/PasswordEdit.vue";
 import UserDestroy from "@/pages/user/UserDestroy.vue";
+import UserLogin from "@/pages/user/UserLogin.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
 import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 import CategoryEdit from "@/pages/category/CategoryEdit.vue";
@@ -23,8 +24,16 @@ Vue.use(Router);
 
 export default new Router({
     mode: "history",
+    base: process.env.BASE_URL,
     routes: [
-        {path: '/', component: TaskIndex, name: "TaskIndex"},
+        {
+            path: '/',
+            component: TaskIndex,
+            name: "TaskIndex",
+            meta: {
+                isAuthenticated: true,
+            },
+        },
         {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
         {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
 
@@ -33,6 +42,7 @@ export default new Router({
         {path: '/user/edit/:id', component: UserEdit, name: "UserEdit"},
         {path: '/user/edit/password/:id', component: PasswordEdit, name: "PasswordEdit"},
         {path: '/user/destroy/:id', component: UserDestroy, name: 'UserDestroy'},
+        {path: '/user/login', component: UserLogin, name: 'UserLogin'},
 
         {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
         {path: '/category/create', component: CategoryCreate, name: 'CategoryCreate'},

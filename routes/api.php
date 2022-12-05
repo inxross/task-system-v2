@@ -50,3 +50,7 @@ Route::group(['prefix' => 'task'], function(){
     Route::post('store', 'TaskController@store')->name('task.store');
 });
 
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+    Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+});

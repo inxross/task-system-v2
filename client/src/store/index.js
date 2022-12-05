@@ -4,6 +4,7 @@ import axios from 'axios';
 import category from "./modules/category.js";
 import task from "./modules/task.js";
 import user from "./modules/user.js";
+import auth from "./modules/auth.js";
 
 Vue.use(Vuex);
 
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     modules: {
         category,
         task,
-        user
+        user,
+        auth
     }
 });
