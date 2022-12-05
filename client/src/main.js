@@ -17,6 +17,17 @@ Vue.config.productionTip = false;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = "http://vue-laravel-separately-tasksystem.localdomain";
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.isAuthenticated)) {
+            if (!store.state.auth.isAuth) {
+            next({ name: 'UserLogin' });
+        } else {
+            next();
+        }
+    }
+    next();
+});
+
 new Vue({
   router: router,
   store: store,
