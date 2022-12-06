@@ -48,6 +48,7 @@ Route::group(['prefix' => 'status'], function(){
 Route::group(['prefix' => 'task'], function(){
     Route::get('index', 'TaskController@index')->name('task.index');
     Route::post('store', 'TaskController@store')->name('task.store');
+    Route::post('update','TaskController@update')->name('task.update');
     Route::post('destroy','TaskController@destroy')->name('task.destroy');
 });
 
