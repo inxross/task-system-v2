@@ -4,6 +4,7 @@ import Test from "./views/MyTest.vue";
 import TaskIndex from "@/pages/task/TaskIndex.vue";
 import TaskCreate from "@/pages/task/TaskCreate.vue";
 import TaskShow from "@/pages/task/TaskShow.vue";
+import TaskDestroy from "@/pages/task/TaskDestroy.vue";
 import UserIndex from "@/pages/user/UserIndex.vue";
 import UserCreate from "@/pages/user/UserCreate.vue";
 import UserEdit from "@/pages/user/UserEdit.vue";
@@ -27,6 +28,7 @@ export default new Router({
         {path: '/', component: TaskIndex, name: "TaskIndex"},
         {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
         {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
+        {path: '/task/destroy/:id', component: TaskDestroy, name: "TaskDestroy"},
 
         {path: '/user/index', component: UserIndex, name: "UserIndex"},
         {path: '/user/create', component: UserCreate, name: "UserCreate"},
