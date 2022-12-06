@@ -89,6 +89,8 @@ class TaskController extends Controller
         $task->category_id = request('task.category_id');
         $task->status_id = request('task.status_id');
         $task->deadline = request('task.deadline');
+        $task->progress = request('task.progress');
+        $task->man_hours = request('task.man_hours');
 
         $task->save();
     }

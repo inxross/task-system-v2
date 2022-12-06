@@ -18,6 +18,12 @@
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
                         <br>
+                        進捗度<br>
+                        <input type="integer" name="progress" v-model="task.progress">
+                        <br>
+                        工数<br>
+                        <input type="integer" name="man_hours" v-model="task.man_hours">
+                        <br>
                         ステータス<br>
                         <select v-model="task.status_id">
                              <option value="">選択してください</option>
