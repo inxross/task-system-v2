@@ -2,10 +2,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">タスク詳細画面</div>
+            <div class="card border-danger">
+                <div class="card-header">タスク削除画面</div>
 
                 <div class="card-body">
+                        <h4 class="text-danger">以下のタスクを本当に削除してよろしいでしょうか？</h4>
                         <div class="card">
                             <div class="card-header">
                                 <h4>{{task.name}}</h4>
@@ -38,16 +39,13 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                             <div class="card-body">
                                 <p class="card-text newline">{{task.description}}</p>
                             </div>
-                            <div class="card-footer text-muted">
-                                <button class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
-
-                                <button class="btn btn-outline-danger mx-4" @click="goDestroy(task.id)">削除</button>
-                            </div>
                         </div>
+                        <br>
+                        <br>
+                        <button class="btn btn-danger" @click="destroy">削除する</button>
                 </div>
             </div>
         </div>
@@ -56,43 +54,39 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     computed: {
         task() {
-            const dataId = parseInt(this.$route.params.id, 10);
-            //const dataId = this.$route.params.id;
+            //const dataId = parseInt(this.$route.params.id, 10);
+            const dataId = this.$route.params.id;
             const data = this.$store.getters.taskList.find(a => (
                 a.id === dataId
             ));
-            console.log(data);
             return data;
         }
     },
-    created() {
-        this.$store.dispatch('updateTaskList');
-    },
     methods: {
-        goEdit(id) {
-            this.$router.push({
-                name: "TaskEdit",
-                params: { id: id}
-            })
-        },
-        goDestroy(id) {
-            this.$router.push({
-                name: "TaskDestroy",
-                params: { id: id}
-            })
+        destroy() {
+            axios.post(
+                '/api/task/destroy',
+                {
+                    id: this.task.id
+                }
+            )
+            .then(response => {
+                console.log(response);
+                this.$router.push({
+                    name: "TaskIndex"
+                });
+            });
+
         },
     },
-
 }
 </script>
 
 <style>
-.newline {
-  white-space: pre-wrap;
-}
-</style>
 
+</style>
