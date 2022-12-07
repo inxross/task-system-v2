@@ -52,3 +52,6 @@ Route::group(['prefix' => 'task'], function(){
     Route::post('destroy','TaskController@destroy')->name('task.destroy');
 });
 
+Route::group(['prefix' => 'comment'], function(){
+    Route::post('store', 'CommentController@store')->name('comment.store');
+});

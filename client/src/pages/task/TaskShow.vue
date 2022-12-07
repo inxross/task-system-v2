@@ -48,6 +48,14 @@
                                 <button class="btn btn-outline-danger mx-4" @click="goDestroy(task.id)">削除</button>
                             </div>
                         </div>
+
+                        <br>
+                        <div method="POST" action="#" enctype="multipart/form-data">
+                            <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
+                            <!--{{comment}}-->
+                            <input type="hidden" name="user" value="">
+                            <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -56,8 +64,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
+    data() {
+        return {
+            comment: '',
+        };
+    },
     computed: {
         task() {
             const dataId = parseInt(this.$route.params.id, 10);
@@ -85,6 +99,19 @@ export default {
                 params: { id: id}
             })
         },
+        commentSubmit() {
+            axios.post(
+                '/api/comment/store',
+                {
+                    comment: this.comment,
+                    task_id: this.task.id
+                }
+            )
+            .then(response => {
+                console.log(response);
+                this.comment = '';
+            });
+        }
     },
 
 }
