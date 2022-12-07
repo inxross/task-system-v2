@@ -50,6 +50,17 @@
                         </div>
 
                         <br>
+                        <!--{{comments}}-->
+                        <div class="card" v-for="comment in comments" :key="comment.id">
+                            <div class="card-header text-muted">
+                                <h7>投稿者：test1(仮)</h7>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{comment.text}}</p>
+                            </div>
+                        </div>
+
+                        <br>
                         <div method="POST" action="#" enctype="multipart/form-data">
                             <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
                             <!--{{comment}}-->
@@ -81,10 +92,15 @@ export default {
             ));
             console.log(data);
             return data;
+        },
+        comments() {
+            return this.$store.getters.commentList;
         }
     },
     created() {
         this.$store.dispatch('updateTaskList');
+        this.$store.dispatch('updateCommentList', this.$route.params.id);
+        //console.log(typeof this.$route.params.id);
     },
     methods: {
         goEdit(id) {
