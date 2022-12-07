@@ -53,7 +53,7 @@
                         <!--{{comments}}-->
                         <div class="card" v-for="comment in comments" :key="comment.id">
                             <div class="card-header text-muted">
-                                <h7>投稿者：test1(仮)</h7>
+                                投稿者：{{ comment.user ? comment.user.name : ''}}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{comment.text}}</p>
@@ -64,7 +64,7 @@
                         <div method="POST" action="#" enctype="multipart/form-data">
                             <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
                             <!--{{comment}}-->
-                            <input type="hidden" name="user" value="">
+                            <input type="hidden" name="user" v-model="user_id">
                             <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
                         </div>
                 </div>
@@ -81,6 +81,7 @@ export default {
     data() {
         return {
             comment: '',
+            user_id: 1,
         };
     },
     computed: {
@@ -120,12 +121,14 @@ export default {
                 '/api/comment/store',
                 {
                     comment: this.comment,
+                    user_id: this.user_id,
                     task_id: this.task.id
                 }
             )
             .then(response => {
                 console.log(response);
                 this.comment = '';
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
         }
     },

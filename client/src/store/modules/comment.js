@@ -17,7 +17,7 @@ const mutations = {
 
 const actions = {
     updateCommentList({ commit }, id) {
-        console.log(id);
+        //console.log(id);
         axios.post(
             '/api/comment/index',
             {

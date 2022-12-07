@@ -42,6 +42,7 @@ class CommentController extends Controller
     {
         $comment = Comment::create([
             'task_id' => request('task_id'),
+            'user_id' => request('user_id'),
             'text' => request('comment')
         ]);
     }
