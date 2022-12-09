@@ -39,6 +39,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        dd(request()->all());
+
         $task = Task::create([
             'name' => request('createTaskData.task_name'),
             'description' => request('createTaskData.description'),
