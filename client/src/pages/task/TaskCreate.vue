@@ -81,6 +81,20 @@ export default {
     },
     methods: {
         register() {
+
+            axios.post(
+                '/api/task/store',
+                {
+                    createTaskData: this.createTaskData,
+                },
+            )
+            .then(response => {
+                console.log(response);
+                this.$router.push({
+                    name: "TaskIndex"
+                });
+            });
+
             const formData = new FormData();
             formData.append('file',this.fileInfo);
             let config = {
@@ -90,20 +104,13 @@ export default {
             };
 
             axios.post(
-                '/api/task/store',
-                {
-                    createTaskData: this.createTaskData,
-                    formData: formData
-                },
+                '/api/file/store',
+                formData,
                 config
             )
             .then(response => {
                 console.log(response);
-                this.$router.push({
-                    name: "TaskIndex"
-                });
             });
-
 
 
 
