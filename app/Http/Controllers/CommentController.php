@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Task;
+use App\Comment;
 
-class TaskController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with(['status', 'category', 'adminUser', 'workUser'])->get();
+        $id = request('task_id');
+        $comments = Comment::with(['task', 'user'])->where('task_id', $id)->get();
 
         return response()->json([
-            'tasks' => $tasks,
+            'comments' => $comments,
         ]);
     }
 
@@ -39,13 +40,10 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = Task::create([
-            'name' => request('createTaskData.task_name'),
-            'description' => request('createTaskData.description'),
-            'work_user' => request('createTaskData.work_user'),
-            'category_id' => request('createTaskData.category'),
-            'status_id' => request('createTaskData.status'),
-            'deadline' => request('createTaskData.deadline'),
+        $comment = Comment::create([
+            'task_id' => request('task_id'),
+            'user_id' => request('user_id'),
+            'text' => request('comment')
         ]);
     }
 
@@ -66,9 +64,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -78,21 +76,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(Request $request, $id)
     {
-        $id = request('task.id');
-        $task = Task::find($id);
-
-        $task->name = request('task.name');
-        $task->description = request('task.description');
-        $task->work_user = request('task.work_user.id');
-        $task->category_id = request('task.category_id');
-        $task->status_id = request('task.status_id');
-        $task->deadline = request('task.deadline');
-        $task->progress = request('task.progress');
-        $task->man_hours = request('task.man_hours');
-
-        $task->save();
+        //
     }
 
     /**
@@ -101,11 +87,8 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy($id)
     {
-        $id = request('id');
-        $user = Task::find($id);
-
-        $user->delete();
+        //
     }
 }

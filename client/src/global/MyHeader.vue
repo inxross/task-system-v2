@@ -5,7 +5,7 @@
             <b-navbar-brand class="mx-3" :to="{ name: 'TaskIndex' }">task_system</b-navbar-brand>
             <div class="form-inline" v-show="this.$route.name === 'TaskIndex'">
                 <select class="mt-2" v-model="categoryId" v-on:change="categorySearch">
-                    <option value="0" selected>カテゴリ選択</option>
+                    <option value=null selected>カテゴリ選択</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
                 </select>
                 <!-- <button @click="test(1)">test</button> -->
