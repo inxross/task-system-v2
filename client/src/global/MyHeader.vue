@@ -35,7 +35,7 @@
 export default {
     data() {
         return {
-            categoryId: null,
+            categoryId: '0',
         };
     },
     computed: {
