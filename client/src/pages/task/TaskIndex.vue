@@ -45,28 +45,19 @@ export default {
  */
     computed: {
         computedTasks() {
-            let getters = this.$store.getters.taskList;
-            //return this.$store.getters.taskList;
+            const getters = this.$store.getters.taskList;
 
-            console.log(this.$route.query.category);
+            //console.log(this.$route.query.category);
 
-            if (this.$route.query.caterory !== (0 || null)) {
-                const dataId = parseInt(this.$route.query.category, 10);
-                console.log(dataId);
-                const data = getters.filter( function(a) {
-                    return a.category_id == dataId;
-                })
+            const dataId = parseInt(this.$route.query.category, 10);
+            //console.log(dataId);
+            const data = getters.filter( function(a) {
+                return a.category_id == dataId;
+            })
 
-                console.log('if文の処理');
-                console.log(data);
-                getters = data;
-            } else {
-                console.log('else文の処理');
-                console.log(getters);
-            }
+            console.log(data);
 
-            return getters;
-
+            return (this.$route.query.category == 0 || !this.$route.query.category) ? getters : data;
 
         }
     },
