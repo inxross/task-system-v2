@@ -44,19 +44,15 @@ export default {
             //console.log(this.$route.query.category);
 
             if ((this.$route.query.category == 0 && this.$route.query.status == 0) || (!this.$route.query.category && !this.$route.query.status)) {
+                console.log(getters);
                 return getters;
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
-                //console.log(dataId);
+
                 const data = getters.filter( function(a) {
-                    if(statusDataId == 0) {
-                        return a.category_id == categoryDataId
-                    } else if(categoryDataId == 0) {
-                        return a.status_id == statusDataId
-                    } else {
-                        return a.category_id == categoryDataId  && a.status_id == statusDataId
-                    }
+
+                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId)  && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId)
 
                 })
 
