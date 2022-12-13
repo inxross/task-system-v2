@@ -43,13 +43,21 @@ export default {
 
             //console.log(this.$route.query.category);
 
-            if (this.$route.query.category == 0 || !this.$route.query.category) {
+            if ((this.$route.query.category == 0 && this.$route.query.status == 0) || (!this.$route.query.category && !this.$route.query.status)) {
                 return getters;
             } else {
-                const dataId = parseInt(this.$route.query.category, 10);
+                const categoryDataId = parseInt(this.$route.query.category, 10);
+                const statusDataId = parseInt(this.$route.query.status, 10);
                 //console.log(dataId);
                 const data = getters.filter( function(a) {
-                    return a.category_id == dataId;
+                    if(statusDataId == 0) {
+                        return a.category_id == categoryDataId
+                    } else if(categoryDataId == 0) {
+                        return a.status_id == statusDataId
+                    } else {
+                        return a.category_id == categoryDataId  && a.status_id == statusDataId
+                    }
+
                 })
 
                 console.log(data);

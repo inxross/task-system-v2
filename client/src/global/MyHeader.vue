@@ -61,14 +61,14 @@ export default {
             //console.log("categorySearchを実行しました");
             this.$router.push({
                 name: "TaskIndex",
-                query: { category: this.categoryId}
+                query: { category: this.categoryId, status: this.statusId}
             })
         },
         statusSearch() {
             //console.log("statusSearchを実行しました");
             this.$router.push({
                 name: "TaskIndex",
-                query: { status: this.statusId}
+                query: { category: this.categoryId, status: this.statusId}
             })
         },
 /*
