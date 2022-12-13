@@ -43,16 +43,17 @@ export default {
 
             //console.log(this.$route.query.category);
 
-            if ((this.$route.query.category == 0 && this.$route.query.status == 0) || (!this.$route.query.category && !this.$route.query.status)) {
+            if ((this.$route.query.category == 0 && this.$route.query.status == 0 && this.$route.query.user == 0) || (!this.$route.query.category && !this.$route.query.status && !this.$route.query.user)) {
                 console.log(getters);
                 return getters;
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
+                const userDataId = parseInt(this.$route.query.user, 10);
 
                 const data = getters.filter( function(a) {
 
-                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId)  && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId)
+                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId) && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId) && (userDataId==0 ? a.work_user.id !== userDataId : a.work_user.id == userDataId)
 
                 })
 
