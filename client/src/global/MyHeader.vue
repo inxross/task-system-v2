@@ -8,6 +8,10 @@
                     <option value="0" selected>カテゴリ選択</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
                 </select>
+                <select class="mt-2 mx-1" v-model="statusId" v-on:change="statusSearch">
+                    <option value="0" selected>ステータス選択</option>
+                    <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
+                </select>
                 <!-- <button @click="test(1)">test</button> -->
                 <!-- {{categories}} -->
                 <!-- {{ categoryId }} -->
@@ -36,16 +40,21 @@ export default {
     data() {
         return {
             categoryId: '0',
+            statusId: '0',
         };
     },
     computed: {
         categories() {
             return this.$store.getters.categoryList;
         },
+        statuses() {
+            return this.$store.getters.statusList;
+        },
     },
     created() {
         this.$store.dispatch('updateCategoryList');
-        console.log(this.$route.name);
+        this.$store.dispatch('updateStatusList');
+        //console.log(this.$route.name);
     },
     methods: {
         categorySearch() {
@@ -53,6 +62,13 @@ export default {
             this.$router.push({
                 name: "TaskIndex",
                 query: { category: this.categoryId}
+            })
+        },
+        statusSearch() {
+            //console.log("statusSearchを実行しました");
+            this.$router.push({
+                name: "TaskIndex",
+                query: { status: this.statusId}
             })
         },
 /*
