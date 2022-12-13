@@ -36,54 +36,33 @@
 
 <script>
 export default {
-/*
-    data() {
-        return {
-            tasks: [],
-        };
-    },
- */
+
     computed: {
         computedTasks() {
             const getters = this.$store.getters.taskList;
 
             //console.log(this.$route.query.category);
 
-            const dataId = parseInt(this.$route.query.category, 10);
-            //console.log(dataId);
-            const data = getters.filter( function(a) {
-                return a.category_id == dataId;
-            })
+            if ((this.$route.query.category == 0 && this.$route.query.status == 0) || (!this.$route.query.category && !this.$route.query.status)) {
+                console.log(getters);
+                return getters;
+            } else {
+                const categoryDataId = parseInt(this.$route.query.category, 10);
+                const statusDataId = parseInt(this.$route.query.status, 10);
 
-            console.log(data);
+                const data = getters.filter( function(a) {
 
-            return (this.$route.query.category == 0 || !this.$route.query.category) ? getters : data;
+                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId)  && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId)
 
-        }
-    },
-/*
-    watch: {
-        $route(to) {
-            console.log(to.query.category);
-            console.log(this.computedTasks);
-            console.log(to);
-
-            if (to.query.caterory == null) {
-                const dataId = this.$route.query.category;
-                const data = this.computedTasks.filter( function(a) {
-                    return a.category_id == dataId;
                 })
 
-                console.log('if文の処理');
                 console.log(data);
-                this.tasks = data;
-            } else {
-                this.tasks = this.computedTasks;
-                console.log('else文の処理');
+                return data;
             }
+
         }
     },
- */
+
     created() {
         this.$store.dispatch('updateTaskList');
     },
