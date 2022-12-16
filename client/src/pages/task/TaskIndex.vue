@@ -51,27 +51,28 @@ export default {
                 const statusDataId = parseInt(this.$route.query.status, 10);
                 const userDataId = parseInt(this.$route.query.user, 10);
                 const searchword = this.$route.query.searchword;
-                console.log(searchword);
+                //console.log(searchword);
 
-                const data = getters.filter( function(a) {
+                let tentativeData = getters.filter( function(a) {
 
-                    const tentativeData = (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId) && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId) && (userDataId==0 ? a.work_user.id !== userDataId : a.work_user.id == userDataId);
-
-                    if( searchword=='' || !searchword ) {
-                        const addSearchWordData = tentativeData.filter( function(b) {
-                            console.log('addSearchWordDataの処理を通っている');
-                            return b.name.match(searchword);
-                        })
-                        return addSearchWordData;
-                    } else {
-                        console.log('tentativeDataの処理を通っている');
-                        return tentativeData;
-                    }
+                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId) && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId) && (userDataId==0 ? a.work_user.id !== userDataId : a.work_user.id == userDataId);
 
                 })
 
-                console.log(data);
-                return data;
+                if( searchword=='' || !searchword ) {
+                    //console.log('searchwordなしの処理を通っている');
+                    const finalData = tentativeData
+                    return finalData;
+                } else {
+                    const finalData = tentativeData.filter( function(b) {
+                        //console.log('searchwordありの処理を通っている');
+                        return b.name.match(searchword);
+                    })
+                    return finalData;
+                }
+
+                //console.log(finalData);
+                //return finalData;
             }
 
         }
