@@ -16,13 +16,13 @@
                     <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                 </select>
                 <select class="mt-2 mx-1" v-model="userId" v-on:change="search">
-                    <option value="0" selected>ステータス選択</option>
+                    <option value="0" selected>ユーザー選択</option>
                     <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                 </select>
                 <!-- <button @click="test(1)">test</button> -->
                 <!-- {{categories}} -->
                 <!-- {{ categoryId }} -->
-                {{searchword}}
+                <!-- {{searchword}} -->
             </div>
             </b-navbar-nav>
 
