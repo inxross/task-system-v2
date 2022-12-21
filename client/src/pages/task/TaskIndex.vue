@@ -29,6 +29,22 @@
                     <td>{{task.updated_at}}</td>
                 </tr>
                 </tbody>
+                <!--{{getPageCount}}-->
+                <VuePaginate
+                    :page-count="getPageCount"
+                    :page-range="3"
+                    :margin-pages="2"
+                    :click-handler="clickCallback"
+                    :prev-text="'＜'"
+                    :next-text="'＞'"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
+                    :page-link-class="'page-link'"
+                    :prev-class="'page-item'"
+                    :prev-link-class="'page-link'"
+                    :next-class="'page-item'"
+                    :next-link-class="'page-link'">
+                </VuePaginate>
             </table>
         </div>
     </div>
@@ -36,30 +52,59 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            currentPage: 1,
+            perPage: 10,
+        };
+    },
     computed: {
         computedTasks() {
             const getters = this.$store.getters.taskList;
 
             //console.log(this.$route.query.category);
 
-            if ((this.$route.query.category == 0 && this.$route.query.status == 0) || (!this.$route.query.category && !this.$route.query.status)) {
+            let current = this.currentPage * this.perPage;
+            let start = current - this.perPage;
+
+            if ((this.$route.query.category == 0 && this.$route.query.status == 0 && this.$route.query.user == 0 && this.$route.query.searchword == '') || (!this.$route.query.category && !this.$route.query.status && !this.$route.query.user && !this.$route.query.searchword)) {
                 console.log(getters);
-                return getters;
+                return getters.slice(start, current);
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
+                const userDataId = parseInt(this.$route.query.user, 10);
+                const searchword = this.$route.query.searchword;
+                //console.log(searchword);
 
-                const data = getters.filter( function(a) {
+                let tentativeData = getters.filter( function(a) {
 
-                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId)  && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId)
-
+                    return (categoryDataId==0 ? a.category_id !== categoryDataId : a.category_id == categoryDataId) && (statusDataId==0 ? a.status_id !== statusDataId : a.status_id == statusDataId) && (userDataId==0 ? a.work_user.id !== userDataId : a.work_user.id == userDataId);
                 })
 
-                console.log(data);
-                return data;
+                if( searchword=='' || !searchword ) {
+                    //console.log('searchwordなしの処理を通っている');
+                    const finalData = tentativeData
+                    return finalData.slice(start, current);
+                } else {
+                    const finalData = tentativeData.filter( function(b) {
+                        //console.log('searchwordありの処理を通っている');
+                        return b.name.match(searchword);
+                    })
+                    return finalData.slice(start, current);
+                }
+
+                //console.log(finalData);
+                //return finalData;
             }
 
+        },
+        rawGettersTaskList() {
+            return this.$store.getters.taskList;
+        },
+        getPageCount() {
+            //console.log(this.computedTasks.length);
+            return Math.ceil(this.rawGettersTaskList.length / this.perPage);
         }
     },
 
@@ -78,6 +123,9 @@ export default {
                 params: { id: id}
             })
         },
+        clickCallback(pageNum) {
+            this.currentPage = Number(pageNum);
+        }
     }
 
 }

@@ -4,17 +4,25 @@
             <b-navbar-nav>
             <b-navbar-brand class="mx-3" :to="{ name: 'TaskIndex' }">task_system</b-navbar-brand>
             <div class="form-inline" v-show="this.$route.name === 'TaskIndex'">
-                <select class="mt-2" v-model="categoryId" v-on:change="categorySearch">
-                    <option value="0" selected>カテゴリ選択</option>
+
+                <input class="me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchword" v-on:input="search">
+
+                <select class="mt-2 mx-1" v-model="categoryId" v-on:change="search">
+                    <option value="0">カテゴリ選択</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
                 </select>
-                <select class="mt-2 mx-1" v-model="statusId" v-on:change="statusSearch">
+                <select class="mt-2 mx-1" v-model="statusId" v-on:change="search">
                     <option value="0" selected>ステータス選択</option>
                     <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
+                </select>
+                <select class="mt-2 mx-1" v-model="userId" v-on:change="search">
+                    <option value="0" selected>ユーザー選択</option>
+                    <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                 </select>
                 <!-- <button @click="test(1)">test</button> -->
                 <!-- {{categories}} -->
                 <!-- {{ categoryId }} -->
+                <!-- {{searchword}} -->
             </div>
             </b-navbar-nav>
 
@@ -41,6 +49,8 @@ export default {
         return {
             categoryId: '0',
             statusId: '0',
+            userId: '0',
+            searchword: '',
         };
     },
     computed: {
@@ -50,26 +60,24 @@ export default {
         statuses() {
             return this.$store.getters.statusList;
         },
+        users() {
+            return this.$store.getters.userList;
+        },
     },
     created() {
         this.$store.dispatch('updateCategoryList');
         this.$store.dispatch('updateStatusList');
+        this.$store.dispatch('updateUserList');
         //console.log(this.$route.name);
     },
     methods: {
-        categorySearch() {
-            //console.log("categorySearchを実行しました");
+        search() {
+            //console.log("searchを実行しました");
             this.$router.push({
                 name: "TaskIndex",
-                query: { category: this.categoryId, status: this.statusId}
+                query: { category: this.categoryId, status: this.statusId, user: this.userId, searchword: this.searchword}
             })
-        },
-        statusSearch() {
-            //console.log("statusSearchを実行しました");
-            this.$router.push({
-                name: "TaskIndex",
-                query: { category: this.categoryId, status: this.statusId}
-            })
+            .catch( err => console.log(err) )
         },
 /*
         test(id) {
