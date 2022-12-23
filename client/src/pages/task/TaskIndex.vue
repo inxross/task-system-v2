@@ -19,17 +19,17 @@
                     <th scope="col">更新日時</th>
                     </tr>
                 </thead>
-                <tbody v-for="task in computedTasks" :key="task.id">
+                <tbody v-for="task in afterSliceComputedTasksForPaginate" :key="task.id">
                 <tr  @click="goShow(task.id)">
                     <td>{{task.id}}</td>
                     <td>{{task.status ? task.status.name : ''}}</td>
                     <td>{{task.name}}</td>
                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                     <td>{{task.deadline}}</td>
-                    <td>{{task.updated_at}}</td>
+                    <td>{{task.updated_at | moment }}</td>
                 </tr>
                 </tbody>
-                <!--{{getPageCount}}-->
+                <!--{{afterSliceComputedTasksForPaginate}}-->
                 <VuePaginate
                     :page-count="getPageCount"
                     :page-range="3"
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
     data() {
         return {
@@ -64,12 +66,11 @@ export default {
 
             //console.log(this.$route.query.category);
 
-            let current = this.currentPage * this.perPage;
-            let start = current - this.perPage;
+
 
             if ((this.$route.query.category == 0 && this.$route.query.status == 0 && this.$route.query.user == 0 && this.$route.query.searchword == '') || (!this.$route.query.category && !this.$route.query.status && !this.$route.query.user && !this.$route.query.searchword)) {
-                console.log(getters);
-                return getters.slice(start, current);
+                //console.log(getters);
+                return getters;
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
@@ -85,13 +86,13 @@ export default {
                 if( searchword=='' || !searchword ) {
                     //console.log('searchwordなしの処理を通っている');
                     const finalData = tentativeData
-                    return finalData.slice(start, current);
+                    return finalData;
                 } else {
                     const finalData = tentativeData.filter( function(b) {
                         //console.log('searchwordありの処理を通っている');
                         return b.name.match(searchword);
                     })
-                    return finalData.slice(start, current);
+                    return finalData;
                 }
 
                 //console.log(finalData);
@@ -99,12 +100,15 @@ export default {
             }
 
         },
-        rawGettersTaskList() {
-            return this.$store.getters.taskList;
+        afterSliceComputedTasksForPaginate() {
+            let current = this.currentPage * this.perPage;
+            let start = current - this.perPage;
+
+            return this.computedTasks.slice(start, current);
         },
         getPageCount() {
             //console.log(this.computedTasks.length);
-            return Math.ceil(this.rawGettersTaskList.length / this.perPage);
+            return Math.ceil(this.computedTasks.length / this.perPage);
         }
     },
 
@@ -125,6 +129,11 @@ export default {
         },
         clickCallback(pageNum) {
             this.currentPage = Number(pageNum);
+        }
+    },
+    filters: {
+        moment: function (date) {
+            return moment(date).format('YYYY/MM/DD');
         }
     }
 

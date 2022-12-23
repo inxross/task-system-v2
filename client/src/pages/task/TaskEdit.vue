@@ -41,7 +41,9 @@
                         <br>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
-                    {{task}}
+
+                    <!-- {{task}} -->
+
                 </div>
             </div>
         </div>

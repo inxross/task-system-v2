@@ -35,7 +35,9 @@
                         <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
-                    {{createTaskData}}
+
+                    <!-- {{createTaskData}} -->
+
                 </div>
             </div>
         </div>
