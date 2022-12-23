@@ -26,10 +26,10 @@
                     <td>{{task.name}}</td>
                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                     <td>{{task.deadline}}</td>
-                    <td>{{task.updated_at}}</td>
+                    <td>{{task.updated_at | moment }}</td>
                 </tr>
                 </tbody>
-                <!--{{getPageCount}}-->
+                <!--{{afterSliceComputedTasksForPaginate}}-->
                 <VuePaginate
                     :page-count="getPageCount"
                     :page-range="3"
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
     data() {
         return {
@@ -127,6 +129,11 @@ export default {
         },
         clickCallback(pageNum) {
             this.currentPage = Number(pageNum);
+        }
+    },
+    filters: {
+        moment: function (date) {
+            return moment(date).format('YYYY/MM/DD');
         }
     }
 
