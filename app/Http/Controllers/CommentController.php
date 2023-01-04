@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Comment;
+use App\Task;
 
 class CommentController extends Controller
 {
@@ -79,6 +80,16 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function workUserUpdate()
+    {
+        $id = request('task.id');
+        $task = Task::find($id);
+
+        $task->work_user = request('workUserId');
+
+        $task->save();
     }
 
     /**
