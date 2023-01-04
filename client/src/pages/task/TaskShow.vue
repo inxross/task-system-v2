@@ -71,7 +71,6 @@
                             <option value="0" selected>担当者変更</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
-                        <!--{{task}}-->
                 </div>
             </div>
         </div>
@@ -149,9 +148,12 @@ export default {
                     workUserId: this.workUserId
                 }
             )
-            .then(response => {
-                console.log(response);
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            .then(() => {
+                const workUser = this.$store.getters.userList.find(a => (
+                    a.id == this.workUserId
+                ));
+                this.comment = `担当者を【${workUser.name}】に変更しました。`;
+                this.commentSubmit();
             })
             .catch( err => console.log(err) );
         }
