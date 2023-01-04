@@ -71,7 +71,6 @@
                             <option value="0" selected>担当者変更</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
-                        <!--{{task}}-->
                 </div>
             </div>
         </div>
@@ -150,20 +149,11 @@ export default {
                 }
             )
             .then(() => {
-                const sample = 'サンプル';
-                this.comment = `担当者は${sample}です。`;
-                axios.post(
-                    '/api/comment/store',
-                    {
-                        comment: this.comment,
-                        user_id: this.user_id,
-                        task_id: this.task.id
-                    }
-                )
-            })
-            .then(response => {
-                console.log(response);
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+                const workUser = this.$store.getters.userList.find(a => (
+                    a.id == this.workUserId
+                ));
+                this.comment = `担当者を【${workUser.name}】に変更しました。`;
+                this.commentSubmit();
             })
             .catch( err => console.log(err) );
         }
