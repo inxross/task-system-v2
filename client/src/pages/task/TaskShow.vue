@@ -149,6 +149,18 @@ export default {
                     workUserId: this.workUserId
                 }
             )
+            .then(() => {
+                const sample = 'サンプル';
+                this.comment = `担当者は${sample}です。`;
+                axios.post(
+                    '/api/comment/store',
+                    {
+                        comment: this.comment,
+                        user_id: this.user_id,
+                        task_id: this.task.id
+                    }
+                )
+            })
             .then(response => {
                 console.log(response);
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
