@@ -19,6 +19,7 @@ import StatusIndex from "@/pages/status/StatusIndex.vue";
 import StatusCreate from "@/pages/status/StatusCreate.vue";
 import StatusEdit from "@/pages/status/StatusEdit.vue";
 import StatusDestroy from "@/pages/status/StatusDestroy.vue";
+import MyLogin from "@/pages/auth/MyLogin.vue";
 
 
 Vue.use(Router);
@@ -26,6 +27,8 @@ Vue.use(Router);
 export default new Router({
     mode: "history",
     routes: [
+        {path: '/login', component: MyLogin, name: "MyLogin"},
+
         {path: '/', component: TaskIndex, name: "TaskIndex"},
         {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
         {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
