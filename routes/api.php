@@ -23,6 +23,10 @@ Route::get('/mytest', function () {
     ]);
 });
 
+Route::group(['prefix' => 'auth'], function(){
+    Route::post('login', 'AuthController@login')->name('auth.login');
+});
+
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
@@ -55,4 +59,6 @@ Route::group(['prefix' => 'task'], function(){
 Route::group(['prefix' => 'comment'], function(){
     Route::post('index', 'CommentController@index')->name('comment.index');
     Route::post('store', 'CommentController@store')->name('comment.store');
+    Route::post('workUserUpdate', 'CommentController@workUserUpdate')->name('comment.workUserUpdate');
+    Route::post('statusUpdate', 'CommentController@statusUpdate')->name('comment.statusUpdate');
 });

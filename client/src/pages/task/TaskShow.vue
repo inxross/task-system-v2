@@ -67,6 +67,14 @@
                             <input type="hidden" name="user" v-model="user_id">
                             <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
                         </div>
+                        <select class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
+                            <option value="0" selected>担当者変更</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
+                        </select>
+                        <select class="mt-2 mx-1" v-model="statusId" v-on:change="changeStatus">
+                            <option value="0" selected>ステータス変更</option>
+                            <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
+                        </select>
                 </div>
             </div>
         </div>
@@ -82,6 +90,8 @@ export default {
         return {
             comment: '',
             user_id: 1,
+            workUserId: '0',
+            statusId: '0',
         };
     },
     computed: {
@@ -96,11 +106,19 @@ export default {
         },
         comments() {
             return this.$store.getters.commentList;
-        }
+        },
+        users() {
+            return this.$store.getters.userList;
+        },
+        statuses() {
+            return this.$store.getters.statusList;
+        },
     },
     created() {
         this.$store.dispatch('updateTaskList');
         this.$store.dispatch('updateCommentList', this.$route.params.id);
+        this.$store.dispatch('updateUserList');
+        this.$store.dispatch('updateStatusList');
         //console.log(typeof this.$route.params.id);
     },
     methods: {
@@ -130,6 +148,40 @@ export default {
                 this.comment = '';
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
+        },
+        changeWorkUser() {
+            axios.post(
+                '/api/comment/workUserUpdate',
+                {
+                    task: this.task,
+                    workUserId: this.workUserId
+                }
+            )
+            .then(() => {
+                const workUser = this.$store.getters.userList.find(a => (
+                    a.id == this.workUserId
+                ));
+                this.comment = `担当者を【${workUser.name}】に変更しました。`;
+                this.commentSubmit();
+            })
+            .catch( err => console.log(err) );
+        },
+        changeStatus() {
+            axios.post(
+                '/api/comment/statusUpdate',
+                {
+                    task: this.task,
+                    statusId: this.statusId
+                }
+            )
+            .then(() => {
+                const status = this.$store.getters.statusList.find(a => (
+                    a.id == this.statusId
+                ));
+                this.comment = `ステータスを【${status.name}】に変更しました。`;
+                this.commentSubmit();
+            })
+            .catch( err => console.log(err) );
         }
     },
 

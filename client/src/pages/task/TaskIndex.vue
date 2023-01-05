@@ -30,22 +30,23 @@
                 </tr>
                 </tbody>
                 <!--{{afterSliceComputedTasksForPaginate}}-->
-                <VuePaginate
-                    :page-count="getPageCount"
-                    :page-range="3"
-                    :margin-pages="2"
-                    :click-handler="clickCallback"
-                    :prev-text="'＜'"
-                    :next-text="'＞'"
-                    :container-class="'pagination'"
-                    :page-class="'page-item'"
-                    :page-link-class="'page-link'"
-                    :prev-class="'page-item'"
-                    :prev-link-class="'page-link'"
-                    :next-class="'page-item'"
-                    :next-link-class="'page-link'">
-                </VuePaginate>
             </table>
+
+            <VuePaginate
+                :page-count="getPageCount"
+                :page-range="3"
+                :margin-pages="2"
+                :click-handler="clickCallback"
+                :prev-text="'＜'"
+                :next-text="'＞'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :page-link-class="'page-link'"
+                :prev-class="'page-item'"
+                :prev-link-class="'page-link'"
+                :next-class="'page-item'"
+                :next-link-class="'page-link'">
+            </VuePaginate>
         </div>
     </div>
 </template>

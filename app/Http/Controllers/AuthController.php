@@ -3,11 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Comment;
-use App\Task;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
-class CommentController extends Controller
+class AuthController extends Controller
 {
+    public function login()
+    {
+        $email = request('loginData.email');
+        $password = request('loginData.password');
+
+        $user = User::where('email', $email)->get()->first();
+        $hash_password = $user->password;
+
+        if (!empty($user) && Hash::check($password, $hash_password)) {
+            // ログイン成功
+            //$user->setApiToken();
+
+            return response()->json([
+                'status' => 'OK',
+                'user'   => $user,
+            ]);
+
+        } else {
+            // ログイン失敗
+            return response()->json([
+                'status' => 'Failed',
+            ]);
+        }
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,12 +40,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $id = request('task_id');
-        $comments = Comment::with(['task', 'user'])->where('task_id', $id)->get();
-
-        return response()->json([
-            'comments' => $comments,
-        ]);
+        //
     }
 
     /**
@@ -41,11 +61,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $comment = Comment::create([
-            'task_id' => request('task_id'),
-            'user_id' => request('user_id'),
-            'text' => request('comment')
-        ]);
+        //
     }
 
     /**
@@ -80,26 +96,6 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function workUserUpdate()
-    {
-        $id = request('task.id');
-        $task = Task::find($id);
-
-        $task->work_user = request('workUserId');
-
-        $task->save();
-    }
-
-    public function statusUpdate()
-    {
-        $id = request('task.id');
-        $task = Task::find($id);
-
-        $task->status_id = request('statusId');
-
-        $task->save();
     }
 
     /**
