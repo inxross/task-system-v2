@@ -174,9 +174,12 @@ export default {
                     statusId: this.statusId
                 }
             )
-            .then(response => {
-                console.log(response);
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            .then(() => {
+                const status = this.$store.getters.statusList.find(a => (
+                    a.id == this.statusId
+                ));
+                this.comment = `ステータスを【${status.name}】に変更しました。`;
+                this.commentSubmit();
             })
             .catch( err => console.log(err) );
         }
