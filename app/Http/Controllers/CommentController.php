@@ -92,6 +92,16 @@ class CommentController extends Controller
         $task->save();
     }
 
+    public function statusUpdate()
+    {
+        $id = request('task.id');
+        $task = Task::find($id);
+
+        $task->status_id = request('statusId');
+
+        $task->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

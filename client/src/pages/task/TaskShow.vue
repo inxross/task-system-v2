@@ -71,6 +71,10 @@
                             <option value="0" selected>担当者変更</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
+                        <select class="mt-2 mx-1" v-model="statusId" v-on:change="changeStatus">
+                            <option value="0" selected>ステータス変更</option>
+                            <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
+                        </select>
                 </div>
             </div>
         </div>
@@ -87,6 +91,7 @@ export default {
             comment: '',
             user_id: 1,
             workUserId: '0',
+            statusId: '0',
         };
     },
     computed: {
@@ -105,11 +110,15 @@ export default {
         users() {
             return this.$store.getters.userList;
         },
+        statuses() {
+            return this.$store.getters.statusList;
+        },
     },
     created() {
         this.$store.dispatch('updateTaskList');
         this.$store.dispatch('updateCommentList', this.$route.params.id);
         this.$store.dispatch('updateUserList');
+        this.$store.dispatch('updateStatusList');
         //console.log(typeof this.$route.params.id);
     },
     methods: {
@@ -154,6 +163,20 @@ export default {
                 ));
                 this.comment = `担当者を【${workUser.name}】に変更しました。`;
                 this.commentSubmit();
+            })
+            .catch( err => console.log(err) );
+        },
+        changeStatus() {
+            axios.post(
+                '/api/comment/statusUpdate',
+                {
+                    task: this.task,
+                    statusId: this.statusId
+                }
+            )
+            .then(response => {
+                console.log(response);
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
             })
             .catch( err => console.log(err) );
         }
