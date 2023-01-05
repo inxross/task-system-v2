@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -18,7 +20,10 @@ export default {
     },
     methods: {
         async getData() {
-            const response = await this.axios.get('http://vue-laravel-separately-tasksystem.localdomain/api/mytest');
+            const response = await axios.get(
+                '/api/mytest/test'
+            )
+
             this.person = response.data.person;
         }
     }

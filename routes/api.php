@@ -17,11 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/mytest', function () {
+Route::group(['prefix' => 'mytest'], function(){
+    Route::middleware('auth:api')->get('test', 'MytestController@test')->name('mytest.test');
+});
+
+/*
+Route::middleware('auth:api')->get('/mytest', function () {
     return response()->json([
         'person' => ['name' => '太郎', 'kana' => 'タロウ'],
     ]);
 });
+ */
 
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
