@@ -6,6 +6,7 @@ import task from "./modules/task.js";
 import user from "./modules/user.js";
 import status from "./modules/status.js";
 import comment from "./modules/comment.js";
+import loginUser from "./modules/loginUser.js";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
         task,
         user,
         status,
-        comment
+        comment,
+        loginUser
     }
 });
