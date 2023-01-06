@@ -16,6 +16,11 @@ const mutations = {
 };
 
 const actions = {
+    autoLogin({commit}) {
+        const loginUserInLocalStorage = localStorage.getItem('loginUserInLocalStorage');
+        if (!loginUserInLocalStorage) return;
+        commit('updateLoginUser')
+    },
     login({ commit }, loginData) {
         axios.post(
             '/api/auth/login',
@@ -26,6 +31,10 @@ const actions = {
         .then(response => {
             console.log(response);
             const newLoginUser = response.data.user;
+
+            const jsonNewLoginUser = JSON.stringify(response.data.user);
+            localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
+
             commit('updateLoginUser', newLoginUser);
             router.push({
                 name: "TaskIndex"
