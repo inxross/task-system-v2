@@ -34,9 +34,9 @@
                 <b-dropdown-item :to="{ name: 'UserIndex' }">ユーザー設定</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown text="User" right>
+            <b-nav-item-dropdown :text='loginUserName' right>
                 <b-dropdown-item href="#">個人設定</b-dropdown-item>
-                <b-dropdown-item href="#">Logout</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'MyLogin' }">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-navbar>
@@ -62,6 +62,9 @@ export default {
         },
         users() {
             return this.$store.getters.userList;
+        },
+        loginUserName() {
+            return this.$store.getters.loginUser !== null ? this.$store.getters.loginUser.name : 'NotLogin';
         },
     },
     created() {

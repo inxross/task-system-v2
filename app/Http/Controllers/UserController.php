@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -44,6 +45,7 @@ class UserController extends Controller
             'name' => request('createUserData.user_name'),
             'email' => request('createUserData.email'),
             'password' => Hash::make(request('createUserData.password')),
+            'api_token' => Str::random(60),
         ]);
     }
 

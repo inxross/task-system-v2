@@ -15,7 +15,7 @@
 
                         <br>
                         <button class="btn btn-info" @click="login">ログイン</button>
-                        {{loginData}}
+                        <!--{{loginData}}-->
                 </div>
             </div>
         </div>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
     data() {
@@ -37,20 +36,7 @@ export default {
     },
     methods: {
         login() {
-            axios.post(
-                '/api/auth/login',
-                {
-                    loginData: this.loginData
-                }
-            )
-            .then(response => {
-                console.log(response);
-                //this.$router.push({
-                //    name: "TaskIndex"
-                //});
-            });
-
-
+            this.$store.dispatch('login', this.loginData);
         }
     },
 
