@@ -36,7 +36,7 @@
 
             <b-nav-item-dropdown text="User" right>
                 <b-dropdown-item href="#">個人設定</b-dropdown-item>
-                <b-dropdown-item href="#">Logout</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'MyLogin' }">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-navbar>
