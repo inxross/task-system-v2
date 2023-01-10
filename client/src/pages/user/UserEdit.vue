@@ -54,6 +54,11 @@ export default {
             )
             .then(response => {
                 console.log(response);
+
+                if(this.$store.getters.loginUser.id === this.user.id){
+                    this.$store.dispatch('updateLoginUser', this.user.id);
+                }
+
                 this.$router.push({
                     name: "UserIndex"
                 });

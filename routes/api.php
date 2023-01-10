@@ -25,6 +25,7 @@ Route::get('/mytest', function () {
 
 Route::group(['prefix' => 'auth'], function(){
     Route::post('login', 'AuthController@login')->name('auth.login');
+    Route::post('update', 'AuthController@update')->name('auth.update');
 });
 
 Route::group(['prefix' => 'user'], function(){
