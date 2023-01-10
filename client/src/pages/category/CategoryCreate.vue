@@ -7,6 +7,8 @@
 
                 <div class="card-body">
                         カテゴリ名<br>
+                        <!-- エラーメッセージを追加 -->
+                        <p v-if="isInValidName" class="error-name">5文字以上で入力してください</p>
                         <input type="text" class="form-control" name="category_name" v-model="createCategoryData.category_name">
                         <br>
                         <br>
@@ -29,6 +31,11 @@ export default {
                 category_name: '',
             },
         };
+    },
+    computed: {
+        isInValidName() {
+            return this.createCategoryData.category_name.length < 5;
+        },
     },
     methods: {
         register() {
@@ -53,5 +60,8 @@ export default {
 </script>
 
 <style>
-
+.error-name {
+    color:red;
+    font-weight:bold;
+}
 </style>
