@@ -46,6 +46,7 @@ class TaskController extends Controller
             'category_id' => request('createTaskData.category'),
             'status_id' => request('createTaskData.status'),
             'deadline' => request('createTaskData.deadline'),
+            'admin_user' => request('admin_user'),
         ]);
     }
 

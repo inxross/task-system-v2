@@ -12,6 +12,9 @@
                         タスク説明文<br>
                         <textarea class="form-control" rows="10" name="description" v-model="createTaskData.description"></textarea>
                         <br>
+                        登録者：{{ $store.getters.loginUser.name }}
+                        <input type="hidden" name="admin_user" :value="loginUserId">
+                        <br>
                         担当者<br>
                         <select v-model="createTaskData.work_user">
                              <option value="">選択してください</option>
@@ -71,6 +74,9 @@ export default {
         categories() {
             return this.$store.getters.categoryList;
         },
+        loginUserId() {
+            return this.$store.getters.loginUser.id;
+        }
     },
     created() {
         this.$store.dispatch('updateUserList');
@@ -82,7 +88,8 @@ export default {
             axios.post(
                 '/api/task/store',
                 {
-                    createTaskData: this.createTaskData
+                    createTaskData: this.createTaskData,
+                    admin_user: this.loginUserId
                 }
             )
             .then(response => {
