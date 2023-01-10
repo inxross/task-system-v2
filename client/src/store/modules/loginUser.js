@@ -41,6 +41,11 @@ const actions = {
             });
         });
     },
+    logout({ commit }) {
+        commit('updateLoginUser', null);
+        localStorage.removeItem('loginUserInLocalStorage');
+        router.replace('/login');
+    }
 };
 
 export default {
