@@ -9,9 +9,13 @@
                         カテゴリ名<br>
                         <input type="text" class="form-control" name="category_name" v-model="createCategoryData.category_name">
                         <br>
+                        <div class="error" v-if="!$v.category_name.required">Field is required</div>
+                        <div class="error" v-if="!$v.category_name.minLength">Name must have at least {{$v.name.$params.minLength.min}} letters.</div>
+                        <tree-view :data="$v.category_name" :options="{rootObjectKey: '$v.category_name', maxDepth: 2}"></tree-view>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
                     <!-- {{createCategoryData}} -->
+                    {{$v.category_name}}
                 </div>
             </div>
         </div>
@@ -21,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+import { required, minLength } from 'vuelidate/lib/validators';
 
 export default {
     data() {
@@ -48,6 +53,12 @@ export default {
             this.createCategoryData.category_name = '';
         }
     },
+    validations: {
+        category_name: {
+            required,
+            minLength: minLength(4)
+        },
+    }
 
 }
 </script>
