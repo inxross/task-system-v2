@@ -35,7 +35,7 @@
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown :text='loginUserName' right>
-                <b-dropdown-item :to="this.$store.getters.loginUser ? { name: 'UserEdit', params: {id: $store.getters.loginUser.id} } : '/login'">個人設定</b-dropdown-item>
+                <b-dropdown-item v-if=isAuthenticated :to="{ name: 'UserEdit', params: {id: $store.getters.loginUser.id} }">個人設定</b-dropdown-item>
                 <b-dropdown-item :to="{ name: 'MyLogin' }" @click="logout">ログアウト</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
@@ -66,6 +66,9 @@ export default {
         loginUserName() {
             return this.$store.getters.loginUser !== null ? this.$store.getters.loginUser.name : 'NotLogin';
         },
+        isAuthenticated() {
+            return this.$store.getters.loginUser !== null;
+        }
     },
     created() {
         this.$store.dispatch('updateCategoryList');
