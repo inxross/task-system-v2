@@ -45,6 +45,28 @@ const actions = {
         commit('updateLoginUser', null);
         localStorage.removeItem('loginUserInLocalStorage');
         router.replace('/login');
+    },
+    updateLoginUser({ commit }, updateDataId) {
+        axios.post(
+            '/api/auth/update',
+            {
+                updateDataId: updateDataId
+            }
+        )
+        .then(response => {
+            console.log(response);
+            const newLoginUser = response.data.user;
+
+            commit('updateLoginUser', newLoginUser);
+
+            const jsonNewLoginUser = JSON.stringify(response.data.user);
+            localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
+/*
+            router.push({
+                name: "UserIndex"
+            });
+*/
+        });
     }
 };
 
