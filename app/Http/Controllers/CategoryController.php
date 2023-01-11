@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Http\Requests\StoreCategoryForm;
 
 class CategoryController extends Controller
 {
@@ -37,10 +38,14 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryForm $request)
     {
         $category = Category::create([
             'name' => $request->get('category_name'),
+        ]);
+
+        return response()->json([
+            'category' => $category,
         ]);
     }
 
