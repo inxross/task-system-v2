@@ -65,16 +65,18 @@
                             <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
                             <!--{{comment}}-->
                             <input type="hidden" name="user" v-model="loginUserId">
-                            <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
+
                         </div>
-                        <select class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
+                        <select class="mt-2 mx-1" v-model="workUserId">
                             <option value="0" selected>担当者変更</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
-                        <select class="mt-2 mx-1" v-model="statusId" v-on:change="changeStatus">
+                        <select class="mt-2 mx-1" v-model="statusId">
                             <option value="0" selected>ステータス変更</option>
                             <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                         </select>
+                        <br>
+                        <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
                 </div>
             </div>
         </div>
@@ -142,15 +144,21 @@ export default {
                 {
                     comment: this.comment,
                     user_id: this.loginUserId,
-                    task_id: this.task.id
+                    task_id: this.task.id,
+                    workUserId: this.workUserId,
+                    statusId: this.statusId
                 }
             )
             .then(response => {
                 console.log(response);
                 this.comment = '';
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
+            })
+            .catch(error => {
+                console.log(error);
             });
         },
+/*
         changeWorkUser() {
             axios.post(
                 '/api/comment/workUserUpdate',
@@ -185,6 +193,7 @@ export default {
             })
             .catch( err => console.log(err) );
         }
+ */
     },
 
 }
