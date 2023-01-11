@@ -3,15 +3,20 @@ import router from '../../router.js';
 
 const state = {
     loginUser: null,
+    loginErrorMessages: null
 };
 
 const getters = {
     loginUser: state => state.loginUser,
+    loginErrorMessages: state => state.loginErrorMessages
 };
 
 const mutations = {
     updateLoginUser(state, newLoginUser) {
         state.loginUser = newLoginUser;
+    },
+    updateLoginErrorMessages(state, newLoginErrorMessages) {
+        state.loginErrorMessages = newLoginErrorMessages;
     },
 };
 
@@ -38,11 +43,15 @@ const actions = {
                 const jsonNewLoginUser = JSON.stringify(response.data.user);
                 localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
 
+                commit('updateLoginErrorMessages', null);
+
                 router.push({
                     name: "TaskIndex"
                 });
             } else {
                 console.log('Failed');
+                const newLoginErrorMessages = response.data.errorMessages;
+                commit('updateLoginErrorMessages', newLoginErrorMessages);
             }
 
         });

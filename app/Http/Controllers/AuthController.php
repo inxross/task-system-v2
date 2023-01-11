@@ -29,6 +29,7 @@ class AuthController extends Controller
             // ログイン失敗
             return response()->json([
                 'status' => 'Failed',
+                'errorMessages' => ['メールアドレスまたはパスワードが正しくありません。']
             ]);
         }
 
