@@ -151,31 +151,51 @@ export default {
             )
             .then(response => {
                 console.log(response);
+                console.log(this.workUserId);
+
+                if(this.workUserId != '0') {
+                    this.setWorkUserComment();
+                    this.changeWorkUserComment();
+                }
+
+                console.log(this.comment);
+
+            })
+            .then(response => {
+                console.log(response);
                 this.comment = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+                if(this.workUserId == '0') {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
             })
             .catch(error => {
                 console.log(error);
             });
         },
-/*
-        changeWorkUser() {
+        setWorkUserComment() {
+            const workUser = this.$store.getters.userList.find(a => (
+                a.id == this.workUserId
+            ));
+            this.comment = `担当者を【${workUser.name}】に変更しました。`;
+        },
+        changeWorkUserComment() {
             axios.post(
-                '/api/comment/workUserUpdate',
+                '/api/comment/store',
                 {
-                    task: this.task,
-                    workUserId: this.workUserId
+                    comment: this.comment,
+                    user_id: this.loginUserId,
+                    task_id: this.task.id,
+                    workUserId: this.workUserId,
+                    statusId: this.statusId
                 }
             )
-            .then(() => {
-                const workUser = this.$store.getters.userList.find(a => (
-                    a.id == this.workUserId
-                ));
-                this.comment = `担当者を【${workUser.name}】に変更しました。`;
-                this.commentSubmit();
-            })
-            .catch( err => console.log(err) );
+            .then(response => {
+                console.log(response);
+                this.comment = '';
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            });
         },
+/*
         changeStatus() {
             axios.post(
                 '/api/comment/statusUpdate',

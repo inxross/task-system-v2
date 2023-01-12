@@ -47,6 +47,29 @@ class CommentController extends Controller
                 'user_id' => request('user_id'),
                 'text' => request('comment')
             ]);
+
+            if(request('workUserId') !== '0') {
+                $id = request('task_id');
+                $task = Task::find($id);
+
+                $task->work_user = request('workUserId');
+
+                $task->save();
+            }
+
+            if(request('statusId') !== '0') {
+                $id = request('task_id');
+                $task = Task::find($id);
+
+                $task->status_id = request('statusId');
+
+                $task->save();
+            }
+
+            return response()->json([
+                'status' => 'OK',
+                'comment'   => $comment,
+            ]);
         }
 
         if(request('workUserId') !== '0') {
