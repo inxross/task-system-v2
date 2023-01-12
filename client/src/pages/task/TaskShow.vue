@@ -154,10 +154,15 @@ export default {
                 console.log(this.workUserId);
 
                 if(this.workUserId != '0') {
-                    this.setWorkUserComment();
+                    //this.setWorkUserComment();
                     this.changeWorkUserComment();
                 }
-
+/*
+                if(this.statusId != '0') {
+                    this.setStatusComment();
+                    this.changeStatusComment();
+                }
+ */
                 console.log(this.comment);
 
             })
@@ -172,13 +177,43 @@ export default {
                 console.log(error);
             });
         },
+/*
         setWorkUserComment() {
             const workUser = this.$store.getters.userList.find(a => (
                 a.id == this.workUserId
             ));
             this.comment = `担当者を【${workUser.name}】に変更しました。`;
         },
+ */
         changeWorkUserComment() {
+            const workUser = this.$store.getters.userList.find(a => (
+                a.id == this.workUserId
+            ));
+            this.comment = `担当者を【${workUser.name}】に変更しました。`;
+
+            axios.post(
+                '/api/comment/store',
+                {
+                    comment: this.comment,
+                    user_id: this.loginUserId,
+                    task_id: this.task.id,
+                    workUserId: this.workUserId,
+                    statusId: this.statusId
+                }
+            )
+            .then(response => {
+                console.log(response);
+                this.comment = '';
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            });
+        },
+        setStatusComment() {
+            const status = this.$store.getters.statusList.find(a => (
+                a.id == this.statusId
+            ));
+            this.comment = `担当者を【${status.name}】に変更しました。`;
+        },
+        changeStatusComment() {
             axios.post(
                 '/api/comment/store',
                 {
