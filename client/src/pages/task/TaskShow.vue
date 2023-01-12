@@ -77,6 +77,8 @@
                         </select>
                         <br>
                         <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
+                        <!--{{commentForWorkUser}}-->
+                        <!--{{commentForStatus}}-->
                 </div>
             </div>
         </div>
@@ -91,6 +93,8 @@ export default {
     data() {
         return {
             comment: '',
+            commentForWorkUser: '',
+            commentForStatus: '',
             workUserId: '0',
             statusId: '0',
         };
@@ -118,6 +122,34 @@ export default {
             return this.$store.getters.loginUser.id;
         }
     },
+    watch: {
+        workUserId() {
+            if(this.workUserId != '0') {
+                var vm = this;
+                const workUser = this.$store.getters.userList.find(a => (
+                    a.id == vm.workUserId
+                ));
+                this.commentForWorkUser = `担当者を【${workUser.name}】に変更しました。`;
+            }
+
+            if(this.workUserId == '0') {
+                this.commentForWorkUser = '';
+            }
+        },
+        statusId() {
+            if(this.statusId != '0') {
+                var vm = this;
+                const status = this.$store.getters.statusList.find(a => (
+                    a.id == vm.statusId
+                ));
+                this.commentForStatus = `ステータスを【${status.name}】に変更しました。`;
+            }
+
+            if(this.statusId == '0') {
+                this.commentForStatus = '';
+            }
+        }
+    },
     created() {
         this.$store.dispatch('updateTaskList');
         this.$store.dispatch('updateCommentList', this.$route.params.id);
@@ -143,6 +175,8 @@ export default {
                 '/api/comment/store',
                 {
                     comment: this.comment,
+                    commentForWorkUser: this.commentForWorkUser,
+                    commentForStatus: this.commentForStatus,
                     user_id: this.loginUserId,
                     task_id: this.task.id,
                     workUserId: this.workUserId,
@@ -151,104 +185,15 @@ export default {
             )
             .then(response => {
                 console.log(response);
-                console.log(this.workUserId);
-
-                if(this.workUserId != '0') {
-                    //this.setWorkUserComment();
-                    this.changeWorkUserComment();
-                }
-/*
-                if(this.statusId != '0') {
-                    this.setStatusComment();
-                    this.changeStatusComment();
-                }
- */
-                console.log(this.comment);
-
-            })
-            .then(response => {
-                console.log(response);
                 this.comment = '';
-                if(this.workUserId == '0') {
-                    this.$router.go({path: this.$router.currentRoute.path, force: true});
-                }
+                this.commentForWorkUser = '';
+                this.commentForStatus = '';
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
             })
             .catch(error => {
                 console.log(error);
             });
         },
-/*
-        setWorkUserComment() {
-            const workUser = this.$store.getters.userList.find(a => (
-                a.id == this.workUserId
-            ));
-            this.comment = `担当者を【${workUser.name}】に変更しました。`;
-        },
- */
-        changeWorkUserComment() {
-            const workUser = this.$store.getters.userList.find(a => (
-                a.id == this.workUserId
-            ));
-            this.comment = `担当者を【${workUser.name}】に変更しました。`;
-
-            axios.post(
-                '/api/comment/store',
-                {
-                    comment: this.comment,
-                    user_id: this.loginUserId,
-                    task_id: this.task.id,
-                    workUserId: this.workUserId,
-                    statusId: this.statusId
-                }
-            )
-            .then(response => {
-                console.log(response);
-                this.comment = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
-            });
-        },
-        setStatusComment() {
-            const status = this.$store.getters.statusList.find(a => (
-                a.id == this.statusId
-            ));
-            this.comment = `担当者を【${status.name}】に変更しました。`;
-        },
-        changeStatusComment() {
-            axios.post(
-                '/api/comment/store',
-                {
-                    comment: this.comment,
-                    user_id: this.loginUserId,
-                    task_id: this.task.id,
-                    workUserId: this.workUserId,
-                    statusId: this.statusId
-                }
-            )
-            .then(response => {
-                console.log(response);
-                this.comment = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
-            });
-        },
-/*
-        changeStatus() {
-            axios.post(
-                '/api/comment/statusUpdate',
-                {
-                    task: this.task,
-                    statusId: this.statusId
-                }
-            )
-            .then(() => {
-                const status = this.$store.getters.statusList.find(a => (
-                    a.id == this.statusId
-                ));
-                this.comment = `ステータスを【${status.name}】に変更しました。`;
-                this.commentSubmit();
-            })
-            .catch( err => console.log(err) );
-        }
- */
     },
 
 }
