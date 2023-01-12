@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\File;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -48,6 +50,31 @@ class TaskController extends Controller
             'deadline' => request('createTaskData.deadline'),
             'admin_user' => request('admin_user'),
         ]);
+
+        $formData = request('formData');
+
+        $files = $formData->get('uploadFile');
+        dd($files);
+
+        if (!is_null($files)) {
+            foreach($files as $file){
+                $originalName = $file->getClientOriginalName();
+                //dd($originalName);
+                $ﬁleName = uniqid(rand() . '_'); //ファイル名を作るため。random関数を入れてユニークなidを作る。（お決まりの形ぽい）
+                $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
+                $fileNameToStore = $ﬁleName . '.' . $extension; //作成したファイル名と拡張子を付ける。
+                //$taskId = $task->id;
+                //$file->storeAS('public/'.$id, $d.'_'.$file_name);
+                Storage::putFileAs('public/task/', $file, $fileNameToStore);
+
+                File::create([          //DBに保存
+                    'task_id' => $task->id,
+                    'file_name' => $fileNameToStore,
+                    'original_name' => $originalName
+                ]);
+            }
+        }
+
     }
 
     /**

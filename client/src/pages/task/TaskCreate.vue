@@ -36,6 +36,9 @@
                         締切日<br>
                         <input type="date" name="deadline" v-model="createTaskData.deadline">
                         <br>
+                        ファイル<br>
+                        <input @change="selectedFile" type="file" name="file">
+                        <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
 
@@ -62,6 +65,7 @@ export default {
                 category: '',
                 deadline: '',
             },
+            uploadFile: null
         };
     },
     computed: {
@@ -85,12 +89,24 @@ export default {
     },
     methods: {
         register() {
+            let formData = new FormData();
+            formData.append('uploadFile', this.uploadFile);
+            let config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+
+            console.log(formData.get('uploadFile'));
+
             axios.post(
                 '/api/task/store',
                 {
                     createTaskData: this.createTaskData,
-                    admin_user: this.loginUserId
-                }
+                    admin_user: this.loginUserId,
+                    formData: formData,
+                },
+                config
             )
             .then(response => {
                 console.log(response);
@@ -100,7 +116,13 @@ export default {
             });
 
             //this.createTaskData.task_name = '';
-        }
+        },
+        selectedFile: function(e) {
+            // 選択された File の情報を保存しておく
+            e.preventDefault();
+            let files = e.target.files;
+            this.uploadFile = files[0];
+        },
     },
 
 }
