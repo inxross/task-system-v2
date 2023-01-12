@@ -63,6 +63,7 @@ const actions = {
     },
     logout({ commit }) {
         commit('updateLoginUser', null);
+        console.log('ログアウト実行');
         localStorage.removeItem('loginUserInLocalStorage');
         router.replace('/login');
     },

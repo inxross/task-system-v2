@@ -9,6 +9,9 @@
                         カテゴリ名<br>
                         <input type="text" class="form-control" name="category_name" v-model="category.name">
                         <br>
+                        <ul v-for="error in errors" :key="error.id">
+                            <li class="errorMessage">{{error}}</li>
+                        </ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
                     <!--{{category.name}}
@@ -25,6 +28,11 @@
 import axios from 'axios';
 
 export default {
+    data() {
+        return {
+            errors: null
+        };
+    },
     computed: {
         category() {
             const dataId = parseInt(this.$route.params.id, 10);
@@ -49,6 +57,10 @@ export default {
                 this.$router.push({
                     name: "CategoryIndex"
                 });
+            })
+            .catch(error => {
+                console.log(error.response.data.errors.category_name);
+                this.errors = error.response.data.errors.category_name;
             });
 
         },
