@@ -45,7 +45,9 @@ export default {
 
             axios.post(
                 '/api/test/file',
-                formData
+                {
+                    formData
+                },
                 //config
             )
             .then(response => {
