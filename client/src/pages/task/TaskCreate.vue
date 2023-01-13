@@ -107,7 +107,7 @@ export default {
                     createTaskData: this.createTaskData,
                     admin_user: this.loginUserId,
                     formData,
-                    uploadFile: formData.get('uploadFile')
+                    //uploadFile: formData.get('uploadFile')
                 },
                 //config
             )

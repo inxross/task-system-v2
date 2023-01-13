@@ -50,12 +50,12 @@ class TaskController extends Controller
         ]);
 
         $formData = $request->get('formData');
-        $uploadFile = $request->get('uploadFile');
+        //$uploadFile = $request->get('uploadFile');
 
 
         return response()->json([
             'formData' => $formData,
-            'uploadFile' => $uploadFile
+            //'uploadFile' => $uploadFile
         ]);
     }
 
