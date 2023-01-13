@@ -48,6 +48,15 @@ class TaskController extends Controller
             'deadline' => request('createTaskData.deadline'),
             'admin_user' => request('admin_user'),
         ]);
+
+        $formData = $request->get('formData');
+        $uploadFile = $request->get('uploadFile');
+
+
+        return response()->json([
+            'formData' => $formData,
+            'uploadFile' => $uploadFile
+        ]);
     }
 
     /**
