@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\File;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -39,6 +41,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+
         $task = Task::create([
             'name' => request('createTaskData.task_name'),
             'description' => request('createTaskData.description'),
@@ -48,6 +52,29 @@ class TaskController extends Controller
             'deadline' => request('createTaskData.deadline'),
             'admin_user' => request('admin_user'),
         ]);
+
+        $formData = $request->get('formData');
+        $uploadFile = $request->get('uploadFile');
+
+
+        return response()->json([
+            'formData' => $formData,
+            'uploadFile' => $uploadFile
+        ]);
+
+
+    }
+
+    public function test(Request $request)
+    {
+
+        $formData = $request->get('formData');
+
+        return response()->json([
+            'formData' => $formData
+        ]);
+
+
     }
 
     /**

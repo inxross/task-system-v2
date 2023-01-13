@@ -20,6 +20,7 @@ import StatusCreate from "@/pages/status/StatusCreate.vue";
 import StatusEdit from "@/pages/status/StatusEdit.vue";
 import StatusDestroy from "@/pages/status/StatusDestroy.vue";
 import MyLogin from "@/pages/auth/MyLogin.vue";
+import TestFile from "@/pages/test/TestFile.vue";
 
 
 Vue.use(Router);
@@ -52,6 +53,8 @@ export default new Router({
         {path: '/status/destroy/:id', component: StatusDestroy, name: 'StatusDestroy'},
 
         {path: '/mytest', component: Test},
+        {path: '/test/file', component: TestFile, name: 'TestFile'},
+
         {path: '*', redirect: '/login'},
     ]
 });
