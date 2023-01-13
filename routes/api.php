@@ -23,6 +23,10 @@ Route::get('/mytest', function () {
     ]);
 });
 
+Route::group(['prefix' => 'test'], function(){
+    Route::post('file', 'TaskController@test')->name('task.test');
+});
+
 Route::group(['prefix' => 'auth'], function(){
     Route::post('login', 'AuthController@login')->name('auth.login');
     Route::post('update', 'AuthController@update')->name('auth.update');

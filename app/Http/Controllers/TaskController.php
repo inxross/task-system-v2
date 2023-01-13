@@ -65,6 +65,18 @@ class TaskController extends Controller
 
     }
 
+    public function test(Request $request)
+    {
+
+        $formData = $request->get('formData');
+
+        return response()->json([
+            'formData' => $formData
+        ]);
+
+
+    }
+
     /**
      * Display the specified resource.
      *
