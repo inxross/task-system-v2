@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Http\Requests\StoreUserForm;
 
 class UserController extends Controller
 {
@@ -39,13 +40,17 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserForm $request)
     {
         $user = User::create([
-            'name' => request('createUserData.user_name'),
-            'email' => request('createUserData.email'),
-            'password' => Hash::make(request('createUserData.password')),
+            'name' => $request->get('user_name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
             'api_token' => Str::random(60),
+        ]);
+
+        return response()->json([
+            'user' => $user,
         ]);
     }
 
