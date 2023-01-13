@@ -41,6 +41,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+
         $task = Task::create([
             'name' => request('createTaskData.task_name'),
             'description' => request('createTaskData.description'),
@@ -51,29 +53,15 @@ class TaskController extends Controller
             'admin_user' => request('admin_user'),
         ]);
 
-        $formData = request('formData');
+        $formData = $request->get('formData');
+        $uploadFile = $request->get('uploadFile');
 
-        $files = $formData->get('uploadFile');
-        dd($files);
 
-        if (!is_null($files)) {
-            foreach($files as $file){
-                $originalName = $file->getClientOriginalName();
-                //dd($originalName);
-                $ﬁleName = uniqid(rand() . '_'); //ファイル名を作るため。random関数を入れてユニークなidを作る。（お決まりの形ぽい）
-                $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
-                $fileNameToStore = $ﬁleName . '.' . $extension; //作成したファイル名と拡張子を付ける。
-                //$taskId = $task->id;
-                //$file->storeAS('public/'.$id, $d.'_'.$file_name);
-                Storage::putFileAs('public/task/', $file, $fileNameToStore);
+        return response()->json([
+            'formData' => $formData,
+            'uploadFile' => $uploadFile
+        ]);
 
-                File::create([          //DBに保存
-                    'task_id' => $task->id,
-                    'file_name' => $fileNameToStore,
-                    'original_name' => $originalName
-                ]);
-            }
-        }
 
     }
 

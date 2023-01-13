@@ -91,12 +91,13 @@ export default {
         register() {
             let formData = new FormData();
             formData.append('uploadFile', this.uploadFile);
+/*
             let config = {
                 headers: {
-                    'content-type': 'multipart/form-data'
+                    'content-type': 'multipart/form-data',
                 }
             };
-
+ */
             console.log(formData.get('uploadFile'));
 
             axios.post(
@@ -104,15 +105,19 @@ export default {
                 {
                     createTaskData: this.createTaskData,
                     admin_user: this.loginUserId,
-                    formData: formData,
+                    formData,
+                    uploadFile: formData.get('uploadFile')
                 },
-                config
+                //config
             )
             .then(response => {
                 console.log(response);
                 this.$router.push({
                     name: "TaskIndex"
                 });
+            })
+            .catch(error => {
+                console.log(error);
             });
 
             //this.createTaskData.task_name = '';
