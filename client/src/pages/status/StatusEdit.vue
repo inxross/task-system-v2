@@ -9,8 +9,10 @@
                         ステータス名<br>
                         <input type="text" class="form-control" name="status_name" v-model="status.name">
                         <br>
-                        <ul v-for="error in errors" :key="error.id">
-                            <li class="errorMessage">{{error}}</li>
+                        <ul>
+                            <div v-for="error in errors.status_name" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
                         </ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
@@ -30,7 +32,9 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            errors: null
+            errors: {
+                status_name: [],
+            }
         };
     },
     computed: {
@@ -60,7 +64,12 @@ export default {
             })
             .catch(error => {
                 console.log(error.response.data.errors.status_name);
-                this.errors = error.response.data.errors.status_name;
+                if(error.response.data.errors.status_name) {
+                    const errorsStatusName = error.response.data.errors.status_name;
+                    this.errors.status_name = errorsStatusName.map((error) => {
+                        return error
+                    })
+                }
             });
 
         },
