@@ -23,12 +23,6 @@ axios.defaults.baseURL = "http://vue-laravel-separately-tasksystem.localdomain";
 
 store.dispatch('autoLogin');
 
-new Vue({
-  router: router,
-  store: store,
-  render: h => h(App),
-}).$mount('#app');
-
 router.beforeEach((to, from, next) => {
     console.log('globalbeforEach');
     if (store.getters.loginUser) {
@@ -41,4 +35,12 @@ router.beforeEach((to, from, next) => {
         }
     }
 });
+
+new Vue({
+  router: router,
+  store: store,
+  render: h => h(App),
+}).$mount('#app');
+
+
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Http\Requests\StoreCategoryForm;
 
 class CategoryController extends Controller
 {
@@ -37,10 +38,14 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryForm $request)
     {
         $category = Category::create([
-            'name' => request('category_name'),
+            'name' => $request->get('category_name'),
+        ]);
+
+        return response()->json([
+            'category' => $category,
         ]);
     }
 
@@ -73,12 +78,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(StoreCategoryForm $request)
     {
-        $id = request('id');
+        $id = $request->get('id');
         $category = Category::find($id);
 
-        $category->name = request('category_name');
+        $category->name = $request->get('category_name');
 
         $category->save();
 

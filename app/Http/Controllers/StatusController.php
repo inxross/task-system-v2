@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Status;
+use App\Http\Requests\StoreStatusForm;
 
 class StatusController extends Controller
 {
@@ -37,10 +38,14 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreStatusForm $request)
     {
         $status = Status::create([
-            'name' => request('status_name'),
+            'name' => $request->get('status_name'),
+        ]);
+
+        return response()->json([
+            'status' => $status,
         ]);
     }
 
@@ -73,12 +78,12 @@ class StatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(StoreStatusForm $request)
     {
-        $id = request('id');
+        $id = $request->get('id');
         $status = Status::find($id);
 
-        $status->name = request('status_name');
+        $status->name = $request->get('status_name');
 
         $status->save();
     }

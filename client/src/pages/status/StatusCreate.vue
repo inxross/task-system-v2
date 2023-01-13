@@ -9,6 +9,11 @@
                         ステータス名<br>
                         <input type="text" class="form-control" name="status_name" v-model="createStatusData.status_name">
                         <br>
+                        <ul>
+                            <div v-for="error in errors.status_name" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
+                        </ul>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
                     <!-- {{createCategoryData}} -->
@@ -28,6 +33,9 @@ export default {
             createStatusData: {
                 status_name: '',
             },
+            errors: {
+                status_name: [],
+            }
         };
     },
     methods: {
@@ -43,6 +51,15 @@ export default {
                 this.$router.push({
                     name: "StatusIndex"
                 });
+            })
+            .catch(error => {
+                console.log(error.response.data.errors.status_name);
+                if(error.response.data.errors.status_name) {
+                    const errorsStatusName = error.response.data.errors.status_name;
+                    this.errors.status_name = errorsStatusName.map((error) => {
+                        return error
+                    })
+                }
             });
 
             this.createStatusData.status_name = '';

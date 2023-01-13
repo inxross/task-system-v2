@@ -12,7 +12,9 @@
                         Password<br>
                         <input type="password" class="form-control" name="password" v-model="loginData.password">
                         <br>
-
+                        <ul v-for="loginErrorMessage in loginErrorMessages" :key="loginErrorMessage.id">
+                            <li class="errorMessage">{{loginErrorMessage}}</li>
+                        </ul>
                         <br>
                         <button class="btn btn-info" @click="login">ログイン</button>
                         <!--{{loginData}}-->
@@ -33,6 +35,11 @@ export default {
                 password: '',
             },
         };
+    },
+    computed: {
+        loginErrorMessages() {
+            return this.$store.getters.loginErrorMessages;
+        }
     },
     methods: {
         login() {
