@@ -78,12 +78,12 @@ class StatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(StoreStatusForm $request)
     {
-        $id = request('id');
+        $id = $request->get('id');
         $status = Status::find($id);
 
-        $status->name = request('status_name');
+        $status->name = $request->get('status_name');
 
         $status->save();
     }
