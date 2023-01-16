@@ -50,6 +50,20 @@ class TaskController extends Controller
         ]);
     }
 
+    public function fileupload(Request $request)
+    {
+        $file = $request->file('file');
+
+        //dd($file);
+        $file_name = request()->file->getClientOriginalName();
+        request()->file->storeAs('public/',$file_name);
+
+        return response()->json([
+            'file' => $file,
+        ]);
+
+    }
+
     /**
      * Display the specified resource.
      *
