@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TaskController extends Controller
 {
@@ -55,8 +58,28 @@ class TaskController extends Controller
         $file = $request->file('file');
 
         //dd($file);
-        $file_name = request()->file->getClientOriginalName();
-        request()->file->storeAs('public/',$file_name);
+        //$file_name = request()->file->getClientOriginalName();
+        //request()->file->storeAs('public/',$file_name);
+
+        if (!is_null($file)) {
+
+                $originalName = $file->getClientOriginalName();
+
+                $fileName = Str::random(30);
+                $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
+                $fileNameToStore = $fileName . '.' . $extension; //作成したファイル名と拡張子を付ける。
+
+                $fileInstance = File::create([          //DBに保存
+                    'task_id' => '1',   //サンプル
+                    'user_id' => '1',   //サンプル
+                    'file_name' => $fileNameToStore,
+                    'original_name' => $originalName,
+                ]);
+
+                // /storage/appディレクトリの該当フォルダに保存
+                Storage::putFileAs('public/file/', $file, $fileNameToStore);
+
+        }
 
         return response()->json([
             'file' => $file,
