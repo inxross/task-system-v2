@@ -51,6 +51,10 @@ class TaskController extends Controller
             'deadline' => request('createTaskData.deadline'),
             'admin_user' => request('admin_user'),
         ]);
+
+        return response()->json([
+            'task' => $task,
+        ]);
     }
 
     public function fileUpload(Request $request)
@@ -69,9 +73,15 @@ class TaskController extends Controller
                 $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
                 $fileNameToStore = $fileName . '.' . $extension; //作成したファイル名と拡張子を付ける。
 
+                $data = $request->all();
+                $taskId = $data['taskId'];
+                $admin_user = $data['admin_user'];
+                //$taskId = json_decode($data['taskId']);
+                //$admin_user = json_decode($data['admin_user']);
+
                 $fileInstance = File::create([          //DBに保存
-                    'task_id' => '1',   //サンプル
-                    'user_id' => '1',   //サンプル
+                    'task_id' => $taskId,   //サンプル
+                    'user_id' => $admin_user,   //サンプル
                     'file_name' => $fileNameToStore,
                     'original_name' => $originalName,
                 ]);
