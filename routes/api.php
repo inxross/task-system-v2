@@ -64,6 +64,6 @@ Route::group(['prefix' => 'comment'], function(){
     Route::post('statusUpdate', 'CommentController@statusUpdate')->name('comment.statusUpdate');
 });
 
-Route::group(['prefix' => 'test'], function(){
-    Route::post('fileupload', 'TaskController@fileupload')->name('task.fileupload');
+Route::group(['prefix' => 'file'], function(){
+    Route::post('fileUpload', 'TaskController@fileUpload')->name('task.fileUpload');
 });

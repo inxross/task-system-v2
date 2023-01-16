@@ -39,8 +39,6 @@
                         ファイル<br>
                         <input type="file" name="file" v-on:change="fileSelected">
                         <br>
-                        <button v-on:click="fileUpload">アップロード</button>
-                        <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
 
@@ -91,6 +89,8 @@ export default {
     },
     methods: {
         register() {
+            this.fileUpload();
+
             axios.post(
                 '/api/task/store',
                 {
@@ -116,7 +116,7 @@ export default {
 
             formData.append('file',this.fileInfo)
 
-            axios.post('/api/test/fileupload',formData).then(response =>{
+            axios.post('/api/file/fileUpload',formData).then(response =>{
                 console.log(response)
             });
         }

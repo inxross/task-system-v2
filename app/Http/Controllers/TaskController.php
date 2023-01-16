@@ -53,7 +53,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function fileupload(Request $request)
+    public function fileUpload(Request $request)
     {
         $file = $request->file('file');
 
