@@ -31,7 +31,7 @@ Route::group(['prefix' => 'auth'], function(){
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
-    Route::post('update','UserController@update')->name('user.update');
+    Route::post('update/{user}','UserController@update')->name('user.update');    //依存性の注入
     Route::post('passwordUpdate','UserController@passwordUpdate')->name('user.passwordUpdate');
     Route::post('destroy','UserController@destroy')->name('user.destroy');
 });

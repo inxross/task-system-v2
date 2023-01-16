@@ -13,9 +13,19 @@
                 <div class="card-body">
                         ユーザー名<br>
                         <input type="text" class="form-control" name="user_name" v-model="user.name">
+                        <ul>
+                            <div v-for="error in errors.user_name" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
+                        </ul>
                         <br>
                         メールアドレス<br>
                         <input type="email" class="form-control" name="email" v-model="user.email">
+                        <ul>
+                            <div v-for="error in errors.email" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
+                        </ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
                     <!--{{user.name}}
@@ -32,6 +42,14 @@
 import axios from 'axios';
 
 export default {
+    data() {
+        return {
+            errors: {
+                user_name: [],
+                email: [],
+            }
+        };
+    },
     computed: {
         user() {
             const dataId = parseInt(this.$route.params.id, 10);
@@ -44,8 +62,9 @@ export default {
     },
     methods: {
         update() {
+            const userId = this.user.id;
             axios.post(
-                '/api/user/update',
+                `/api/user/update/${userId}`,
                 {
                     user_name: this.user.name,
                     email: this.user.email,
@@ -62,6 +81,21 @@ export default {
                 this.$router.push({
                     name: "UserIndex"
                 });
+            })
+            .catch(error => {
+                console.log(error.response.data.errors);
+                if(error.response.data.errors.user_name) {
+                    const errorsUserName = error.response.data.errors.user_name;
+                    this.errors.user_name = errorsUserName.map((error) => {
+                        return error
+                    })
+                }
+                if(error.response.data.errors.email) {
+                    const errorsEmail = error.response.data.errors.email;
+                    this.errors.email = errorsEmail.map((error) => {
+                        return error
+                    })
+                }
             });
         },
         goPasswordEdit(id) {
