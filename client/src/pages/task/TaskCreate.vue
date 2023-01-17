@@ -37,7 +37,7 @@
                         <input type="date" name="deadline" v-model="createTaskData.deadline">
                         <br>
                         ファイル<br>
-                        <input type="file" name="file" v-on:change="fileSelected">
+                        <input type="file" name="file[]" multiple v-on:change="fileSelected">
                         <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
@@ -65,7 +65,7 @@ export default {
                 category: '',
                 deadline: '',
             },
-            fileInfo: '',
+            filesInfo: [],
             taskId: ''
         };
     },
@@ -101,7 +101,7 @@ export default {
                 console.log(response);
                 this.taskId = response.data.task.id;
 
-                if(this.fileInfo !== '') {
+                if(this.filesInfo !== '') {
                     this.fileUpload();
                 } else {
                     this.$router.push({
@@ -114,13 +114,19 @@ export default {
             //this.createTaskData.task_name = '';
         },
         fileSelected(event){
-            //console.log(event);
-            this.fileInfo = event.target.files[0];
+            console.log(event);
+            //this.fileInfo = event.target.files[0];
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);
+            this.filesInfo = ArrayFilesInfo.map((fileInfo) => {
+                return fileInfo
+            });
+            console.log(this.filesInfo);
         },
         fileUpload(){
             const formData = new FormData()
 
-            formData.append('file',this.fileInfo)
+            formData.append('file', JSON.stringify(this.filesInfo))
 
             //let taskId = JSON.stringfy(this.taskId)
             //formData.append('taskId',taskId)
