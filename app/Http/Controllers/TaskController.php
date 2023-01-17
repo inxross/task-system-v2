@@ -59,23 +59,18 @@ class TaskController extends Controller
 
     public function fileUpload(Request $request)
     {
-        $data = $request->all();
-        $file = $data['file'];
-        //$file = $request->file('file');
 
-        //dd($file);
-        //$file_name = request()->file->getClientOriginalName();
-        //request()->file->storeAs('public/',$file_name);
+        $files = request()->file('files');
 
-        if (!is_null($file)) {
-
+        if (!is_null($files)) {
+            foreach($files as $file){
                 $originalName = $file->getClientOriginalName();
 
                 $fileName = Str::random(30);
                 $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
                 $fileNameToStore = $fileName . '.' . $extension; //作成したファイル名と拡張子を付ける。
 
-                //$data = $request->all();
+                $data = $request->all();
                 $taskId = $data['taskId'];
                 $admin_user = $data['admin_user'];
                 //$taskId = json_decode($data['taskId']);
@@ -90,11 +85,11 @@ class TaskController extends Controller
 
                 // /storage/appディレクトリの該当フォルダに保存
                 Storage::putFileAs('public/file/', $file, $fileNameToStore);
-
+            }
         }
 
         return response()->json([
-            'file' => $file,
+            'files' => $files,
         ]);
 
     }

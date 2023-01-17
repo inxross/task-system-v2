@@ -37,7 +37,7 @@
                         <input type="date" name="deadline" v-model="createTaskData.deadline">
                         <br>
                         ファイル<br>
-                        <input type="file" name="file" v-on:change="fileSelected">
+                        <input type="file" name="file" multiple v-on:change="fileSelected">
                         <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
@@ -65,7 +65,7 @@ export default {
                 category: '',
                 deadline: '',
             },
-            fileInfo: '',
+            filesInfo: [],
             taskId: ''
         };
     },
@@ -101,7 +101,7 @@ export default {
                 console.log(response);
                 this.taskId = response.data.task.id;
 
-                if(this.fileInfo !== '') {
+                if(this.filesInfo.length != 0) {
                     this.fileUpload();
                 } else {
                     this.$router.push({
@@ -115,21 +115,21 @@ export default {
         },
         fileSelected(event){
             //console.log(event);
-            this.fileInfo = event.target.files[0];
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
         },
         fileUpload(){
-            const formData = new FormData()
+            const formData = new FormData();
 
-            formData.append('file',this.fileInfo)
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
 
-            //let taskId = JSON.stringfy(this.taskId)
-            //formData.append('taskId',taskId)
+            formData.append('taskId',this.taskId);
+            formData.append('admin_user',this.loginUserId);
 
-            //let admin_user = JSON.stringfy(this.loginUserId)
-            //formData.append('admin_user',admin_user)
-
-            formData.append('taskId',this.taskId)
-            formData.append('admin_user',this.loginUserId)
+            console.log(...formData.entries());
 
             axios.post(
                 '/api/file/fileUpload',
