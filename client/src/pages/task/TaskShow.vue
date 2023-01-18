@@ -41,6 +41,11 @@
 
                             <div class="card-body">
                                 <p class="card-text newline">{{task.description}}</p>
+
+                                <div v-for="file in files" :key="file.id">
+                                    <a href="#">{{ file.original_name}}</a>
+                                </div>
+
                             </div>
                             <div class="card-footer text-muted">
                                 <button class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
@@ -120,7 +125,10 @@ export default {
         },
         loginUserId() {
             return this.$store.getters.loginUser.id;
-        }
+        },
+        files() {
+            return this.$store.getters.fileList;
+        },
     },
     watch: {
         workUserId() {
@@ -155,6 +163,7 @@ export default {
         this.$store.dispatch('updateCommentList', this.$route.params.id);
         this.$store.dispatch('updateUserList');
         this.$store.dispatch('updateStatusList');
+        this.$store.dispatch('updateFileList', this.$route.params.id);
         //console.log(typeof this.$route.params.id);
     },
     methods: {
