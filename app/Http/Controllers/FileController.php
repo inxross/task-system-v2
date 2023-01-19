@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class FileController extends Controller
 {
@@ -21,6 +23,22 @@ class FileController extends Controller
         return response()->json([
             'files' => $files,
         ]);
+    }
+
+    public function downLoad(Request $request){
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $image = Storage::get('public/file/'.$file->file_name);
+        $imageText = base64_encode($image);
+        return response()->json([
+            'imageText' => $imageText,
+        ]);
+
+        // ./storage/app/sample.txt をダウンロードする
+        //$pathToFile = Storage::path("sample.txt");
+        //return response()->download($pathToFile);
     }
 
     /**
