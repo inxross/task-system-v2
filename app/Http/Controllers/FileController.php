@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -21,6 +22,32 @@ class FileController extends Controller
         return response()->json([
             'files' => $files,
         ]);
+    }
+
+    public function download(Request $request)
+    {
+        $fileId = $request->get('file_id');
+
+        $file = File::find($fileId);
+
+        $filePath = 'public/file/' . $file->file_name;
+
+        $original_name = $file->original_name;
+
+        $mimeType = Storage::mimeType($filePath);
+        $headers = [['Content-Type' => $mimeType]];
+
+        if (Storage::exists($filePath)) {
+            $downloadedFile = Storage::download($filePath, $original_name, $headers);
+
+            return response()->make($downloadedFile, 200, $headers);
+            //return response($downloadedFile);
+        }
+
+        //$directory = 'file/';
+        //$pathToFile = Storage::path($directory.$file->file_name);
+        //return response()->download($pathToFile);
+
     }
 
     /**

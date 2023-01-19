@@ -43,7 +43,7 @@
                                 <p class="card-text newline">{{task.description}}</p>
 
                                 <div v-for="file in files" :key="file.id">
-                                    <a href="#">{{ file.original_name}}</a>
+                                    <a href="javaScript:void(0)" @click="fileDownload(file)">{{ file.original_name}}</a>
                                 </div>
 
                             </div>
@@ -203,6 +203,50 @@ export default {
                 console.log(error);
             });
         },
+        fileDownload(file) {
+            //console.log(file);
+
+            //const file_name = file.file_name;
+            //location.href = `http://vue-laravel-separately-tasksystem.localdomain/public/storage/file/${file_name}`;
+
+            const fileId = file.id;
+
+            axios.post(
+                '/api/file/download',
+                {
+                    file_id: fileId
+                },
+                {
+                    responseType: "blob"
+                }
+
+            )
+            .then(response => {
+                console.log(response);
+                //window.location = response.request.responseURL;
+                var FILE = window.URL.createObjectURL(new Blob([response.data]));
+
+                var docUrl = document.createElement('x');
+                docUrl.href = FILE;
+                docUrl.setAttribute('download', 'file.pdf');
+                document.body.appendChild(docUrl);
+                docUrl.click();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        },
+        getFileName(contentDisposition) {
+            let fileName = contentDisposition.substring(contentDisposition.indexOf("''") + 2,
+                                                contentDisposition.length
+                                                );
+            //デコードするとスペースが"+"になるのでスペースへ置換します
+            fileName = decodeURI(fileName).replace(/\+/g, " ");
+
+            return fileName;
+        }
+
     },
 
 }
