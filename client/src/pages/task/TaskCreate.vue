@@ -38,11 +38,12 @@
                         <br>
                         ファイル<br>
                         <input type="file" name="file" multiple v-on:change="fileSelected">
+                        <div v-for="fileInfo in filesInfo" :key="fileInfo.id">
+                                {{ fileInfo.name}}
+                        </div>
                         <br>
                         <br>
                         <button class="btn btn-info" @click="register">登録する</button>
-
-                    <!--{{fileInfo}}-->
 
                 </div>
             </div>
@@ -118,6 +119,7 @@ export default {
             const ObjectFilesInfo = event.target.files;
             const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
             this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
         },
         fileUpload(){
             const formData = new FormData();
