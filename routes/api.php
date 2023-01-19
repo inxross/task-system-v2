@@ -67,4 +67,5 @@ Route::group(['prefix' => 'comment'], function(){
 Route::group(['prefix' => 'file'], function(){
     Route::post('fileUpload', 'TaskController@fileUpload')->name('task.fileUpload');
     Route::post('index', 'FileController@index')->name('file.index');
+    Route::post('download', 'FileController@download')->name('file.download');
 });

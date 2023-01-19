@@ -43,7 +43,7 @@
                                 <p class="card-text newline">{{task.description}}</p>
 
                                 <div v-for="file in files" :key="file.id">
-                                    <a href="#">{{ file.original_name}}</a>
+                                    <a href="javaScript:void(0)" @click="fileDownload(file)">{{ file.original_name}}</a>
                                 </div>
 
                             </div>
@@ -203,6 +203,29 @@ export default {
                 console.log(error);
             });
         },
+        fileDownload(file) {
+            const fileId = file.id;
+            axios.post(
+                '/api/file/download',
+                {
+                    file_id: fileId
+                },
+            )
+            .then(response => {
+                console.log(response);
+                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        downloadByURL(url, fileName) {
+            const link = document.createElement('a')
+            link.download = `${fileName}`
+            link.href = url
+            link.target = "_blank"
+            link.click()
+        }
     },
 
 }

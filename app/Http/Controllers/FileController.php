@@ -23,6 +23,19 @@ class FileController extends Controller
         ]);
     }
 
+    public function downLoad(Request $request){
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $pathToFile = 'http://vue-laravel-separately-tasksystem.localdomain/storage/file/'.$file->file_name;
+        return response()->json([
+            'pathToFile' => $pathToFile,
+            'file' => $file
+        ]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
