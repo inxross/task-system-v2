@@ -93,6 +93,7 @@
 
 <script>
 import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 export default {
     data() {
@@ -213,7 +214,8 @@ export default {
             )
             .then(response => {
                 console.log(response);
-                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+                //this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+                this.download(response.data.pathToFile, response.data.file.original_name);
             })
             .catch(error => {
                 console.log(error);
@@ -225,6 +227,9 @@ export default {
             link.href = url
             link.target = "_blank"
             link.click()
+        },
+        download (url, name) {
+            saveAs(url, name);
         }
     },
 
