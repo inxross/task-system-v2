@@ -28,7 +28,7 @@ class FileController extends Controller
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
-        $pathToFile = 'http://vue-laravel-separately-tasksystem.localdomain/storage/file/'.$file->file_name;
+        $pathToFile = 'http://vue-laravel-separately-tasksystem.localdomain/storage/file/'.$file->id.'/'.$file->original_name;
         return response()->json([
             'pathToFile' => $pathToFile,
             'file' => $file

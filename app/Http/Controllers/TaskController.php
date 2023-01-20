@@ -86,7 +86,7 @@ class TaskController extends Controller
                 ]);
 
                 // /storage/appディレクトリの該当フォルダに保存
-                Storage::putFileAs('public/file/', $file, $fileNameToStore);
+                Storage::putFileAs('public/file/'.$fileInstance->id.'/', $file, $originalName);
             }
         }
 
