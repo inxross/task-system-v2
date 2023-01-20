@@ -8,6 +8,7 @@ use App\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreTaskForm;
+use App\Http\Requests\UpdateTaskForm;
 
 class TaskController extends Controller
 {
@@ -124,19 +125,19 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(UpdateTaskForm $request)
     {
-        $id = request('task.id');
+        $id = $request->get('id');
         $task = Task::find($id);
 
-        $task->name = request('task.name');
-        $task->description = request('task.description');
-        $task->work_user = request('task.work_user.id');
-        $task->category_id = request('task.category_id');
-        $task->status_id = request('task.status_id');
-        $task->deadline = request('task.deadline');
-        $task->progress = request('task.progress');
-        $task->man_hours = request('task.man_hours');
+        $task->name = $request->get('task_name');
+        $task->description = $request->get('description');
+        $task->work_user = $request->get('work_user');
+        $task->category_id = $request->get('category');
+        $task->status_id = $request->get('status');
+        $task->deadline = $request->get('deadline');
+        $task->progress = $request->get('progress');
+        $task->man_hours = $request->get('man_hours');
 
         $task->save();
     }
