@@ -41,6 +41,11 @@
 
                             <div class="card-body">
                                 <p class="card-text newline">{{task.description}}</p>
+
+                                <div v-for="file in files" :key="file.id">
+                                    <a href="javaScript:void(0)" @click="fileDownload(file)">{{ file.original_name}}</a>
+                                </div>
+
                             </div>
                             <div class="card-footer text-muted">
                                 <button class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
@@ -120,7 +125,10 @@ export default {
         },
         loginUserId() {
             return this.$store.getters.loginUser.id;
-        }
+        },
+        files() {
+            return this.$store.getters.fileList;
+        },
     },
     watch: {
         workUserId() {
@@ -155,6 +163,7 @@ export default {
         this.$store.dispatch('updateCommentList', this.$route.params.id);
         this.$store.dispatch('updateUserList');
         this.$store.dispatch('updateStatusList');
+        this.$store.dispatch('updateFileList', this.$route.params.id);
         //console.log(typeof this.$route.params.id);
     },
     methods: {
@@ -194,6 +203,29 @@ export default {
                 console.log(error);
             });
         },
+        fileDownload(file) {
+            const fileId = file.id;
+            axios.post(
+                '/api/file/download',
+                {
+                    file_id: fileId
+                },
+            )
+            .then(response => {
+                console.log(response);
+                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        downloadByURL(url, fileName) {
+            const link = document.createElement('a')
+            link.download = `${fileName}`
+            link.href = url
+            link.target = "_blank"
+            link.click()
+        }
     },
 
 }
