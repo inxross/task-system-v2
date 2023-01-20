@@ -15,6 +15,11 @@
                         <input type="password" class="form-control" name="password" v-model="user.password">
                         Password確認<br>
                         <input type="password" class="form-control" name="password_confirmation" v-model="user.password_confirmation">
+                        <ul>
+                            <div v-for="error in errors.password" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
+                        </ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
                     <!-- {{user.password}}
@@ -31,6 +36,13 @@
 import axios from 'axios';
 
 export default {
+    data() {
+        return {
+            errors: {
+                password: []
+            }
+        };
+    },
     computed: {
         user() {
             //const dataId = parseInt(this.$route.params.id, 10);
@@ -56,13 +68,17 @@ export default {
                 this.$router.push({
                     name: "UserIndex"
                 });
-            });
-        },
-        goPasswordEdit(id) {
-            this.$router.push({
-                name: "PasswordEdit",
-                params: { id: id}
             })
+            .catch(error => {
+                console.log(error.response.data.errors);
+
+                if(error.response.data.errors.password) {
+                    const errorsPassword = error.response.data.errors.password;
+                    this.errors.password = errorsPassword.map((error) => {
+                        return error
+                    })
+                }
+            });
         },
     },
 }
