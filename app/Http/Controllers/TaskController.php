@@ -140,6 +140,10 @@ class TaskController extends Controller
         $task->man_hours = $request->get('man_hours');
 
         $task->save();
+
+        return response()->json([
+            'task' => $task,
+        ]);
     }
 
     /**
