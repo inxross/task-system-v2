@@ -7,6 +7,7 @@ use App\Task;
 use App\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Http\Requests\StoreTaskForm;
 
 class TaskController extends Controller
 {
@@ -40,16 +41,16 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTaskForm $request)
     {
         $task = Task::create([
-            'name' => request('createTaskData.task_name'),
-            'description' => request('createTaskData.description'),
-            'work_user' => request('createTaskData.work_user'),
-            'category_id' => request('createTaskData.category'),
-            'status_id' => request('createTaskData.status'),
-            'deadline' => request('createTaskData.deadline'),
-            'admin_user' => request('admin_user'),
+            'name' => $request->get('task_name'),
+            'description' => $request->get('description'),
+            'work_user' => $request->get('work_user'),
+            'category_id' => $request->get('category'),
+            'status_id' => $request->get('status'),
+            'deadline' => $request->get('deadline'),
+            'admin_user' => $request->get('admin_user'),
         ]);
 
         return response()->json([
