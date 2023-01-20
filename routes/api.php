@@ -31,7 +31,7 @@ Route::group(['prefix' => 'auth'], function(){
 Route::group(['prefix' => 'user'], function(){
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
-    Route::post('update','UserController@update')->name('user.update');
+    Route::post('update/{user}','UserController@update')->name('user.update');    //依存性の注入
     Route::post('passwordUpdate','UserController@passwordUpdate')->name('user.passwordUpdate');
     Route::post('destroy','UserController@destroy')->name('user.destroy');
 });
@@ -62,4 +62,8 @@ Route::group(['prefix' => 'comment'], function(){
     Route::post('store', 'CommentController@store')->name('comment.store');
     Route::post('workUserUpdate', 'CommentController@workUserUpdate')->name('comment.workUserUpdate');
     Route::post('statusUpdate', 'CommentController@statusUpdate')->name('comment.statusUpdate');
+});
+
+Route::group(['prefix' => 'file'], function(){
+    Route::post('fileUpload', 'TaskController@fileUpload')->name('task.fileUpload');
 });

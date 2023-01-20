@@ -7,6 +7,8 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreUserForm;
+use App\Http\Requests\UpdateUserForm;
+use App\Http\Requests\UpdatePasswordForm;
 
 class UserController extends Controller
 {
@@ -83,23 +85,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateUserForm $request, User $user)
     {
-        $id = request('id');
-        $user = User::find($id);
+        //$id = $request->get('id');
+        //$user = User::find($id);
 
-        $user->name = request('user_name');
-        $user->email = request('email');
+        $user->name = $request->get('user_name');
+        $user->email = $request->get('email');
 
         $user->save();
     }
 
-    public function passwordUpdate(Request $request)
+    public function passwordUpdate(UpdatePasswordForm $request)
     {
-        $id = request('id');
+        $id = $request->get('id');
         $user = User::find($id);
 
-        $user->password = Hash::make(request('createUserData.password'));
+        $user->password = Hash::make($request->get('password'));
 
         $user->save();
     }
