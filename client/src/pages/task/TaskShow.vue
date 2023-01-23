@@ -210,13 +210,12 @@ export default {
                 {
                     file_id: fileId
                 },
-                {
-                    responseType: 'blob',
-                }
             )
             .then(response => {
                 console.log(response);
-                var FILE = window.URL.createObjectURL(new Blob([response.data]));
+                const BBlob = new Blob([response.data.imageText], {type: response.data.mimeType});
+                console.log(BBlob);
+                var FILE = window.URL.createObjectURL(BBlob);
                 var docUrl = document.createElement('a');
                 docUrl.href = FILE;
                 docUrl.setAttribute('download', 'file.pdf');

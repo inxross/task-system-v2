@@ -46,10 +46,14 @@ class FileController extends Controller
         $mimeType = Storage::mimeType($filePath);
         //$headers = [['Content-Type' => $mimeType]];
 
+        $image = Storage::get('public/file/'.$file->file_name);
+        $imageText = base64_encode($image);
+
         return response()->json([
             'pathToFile' => $pathToFile,
             'file' => $file,
-            'mimeType' => $mimeType
+            'mimeType' => $mimeType,
+            'imageText' => $imageText,
         ]);
 
 
