@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -28,11 +29,29 @@ class FileController extends Controller
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
+/*
+        $original_name = $file->original_name;
+
+        $filePath = 'public/file/' . $file->file_name;
+        $mimeType = Storage::mimeType($filePath);
+        $headers = [['Content-Type' => $mimeType]];
+
+        return Storage::download($filePath, $original_name, $headers);
+ */
+
+
         $pathToFile = 'http://vue-laravel-separately-tasksystem.localdomain/storage/file/'.$file->file_name;
+
+        $filePath = 'public/file/' . $file->file_name;
+        $mimeType = Storage::mimeType($filePath);
+        //$headers = [['Content-Type' => $mimeType]];
+
         return response()->json([
             'pathToFile' => $pathToFile,
-            'file' => $file
+            'file' => $file,
+            'mimeType' => $mimeType
         ]);
+
 
     }
 

@@ -210,10 +210,19 @@ export default {
                 {
                     file_id: fileId
                 },
+                {
+                    responseType: 'blob',
+                }
             )
             .then(response => {
                 console.log(response);
-                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+                var FILE = window.URL.createObjectURL(new Blob([response.data]));
+                var docUrl = document.createElement('a');
+                docUrl.href = FILE;
+                docUrl.setAttribute('download', 'file.pdf');
+                document.body.appendChild(docUrl);
+                docUrl.click();
+                //this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
             })
             .catch(error => {
                 console.log(error);
@@ -225,7 +234,7 @@ export default {
             link.href = url
             link.target = "_blank"
             link.click()
-        }
+        },
     },
 
 }
