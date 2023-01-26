@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\DetailProcess;
 use App\Task;
 use App\File;
 use Illuminate\Support\Facades\Storage;
@@ -61,7 +62,11 @@ class TaskController extends Controller
 
     public function fileUpload(Request $request)
     {
+        $data = $request->all();
+        $commentId = $data['commentId'];
+        DetailProcess::fileStore($request, $commentId);   //ファイル保存処理
 
+/*
         $files = request()->file('files');
 
         if (!is_null($files)) {
@@ -93,7 +98,7 @@ class TaskController extends Controller
         return response()->json([
             'files' => $files,
         ]);
-
+ */
     }
 
     /**

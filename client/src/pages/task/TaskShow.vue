@@ -83,7 +83,7 @@
                         <br>
                         <input class="mt-2 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
                         <br>
-                        <button class="btn btn-dark mt-2" @click="submit">投稿する</button>
+                        <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
                         <!--{{commentForWorkUser}}-->
                         <!--{{commentForStatus}}-->
                 </div>
@@ -105,6 +105,7 @@ export default {
             workUserId: '0',
             statusId: '0',
             filesInfo: [],
+            commentId: ''
         };
     },
     computed: {
@@ -182,13 +183,6 @@ export default {
                 params: { id: id}
             })
         },
-        submit() {
-            if(this.filesInfo.length != 0) {
-                this.fileUpload();
-            }
-
-            this.commentSubmit();
-        },
         commentSubmit() {
             axios.post(
                 '/api/comment/store',
@@ -199,7 +193,7 @@ export default {
                     user_id: this.loginUserId,
                     task_id: this.task.id,
                     workUserId: this.workUserId,
-                    statusId: this.statusId
+                    statusId: this.statusId,
                 }
             )
             .then(response => {
@@ -207,10 +201,23 @@ export default {
                 this.comment = '';
                 this.commentForWorkUser = '';
                 this.commentForStatus = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+                this.commentId = response.data.commentId;
+                //this.$router.go({path: this.$router.currentRoute.path, force: true});
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
             })
             .catch(error => {
-                console.log(error);
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    console.log(error);
+                }
+
+                //console.log(error);
             });
         },
         fileDownload(file) {
@@ -243,7 +250,7 @@ export default {
             this.filesInfo = ArrayFilesInfo;
             console.log(this.filesInfo);
         },
-        fileUpload(){
+        fileUpload(commentId){
             const formData = new FormData();
 
             this.filesInfo.forEach((file, index) => {
@@ -252,6 +259,7 @@ export default {
 
             formData.append('taskId',this.task.id);
             formData.append('admin_user',this.loginUserId);
+            formData.append('commentId',commentId);
 
             console.log(...formData.entries());
 
@@ -261,11 +269,8 @@ export default {
             )
             .then(response =>{
                 console.log(response);
-/*
-                this.$router.push({
-                    name: "TaskIndex"
-                });
- */
+
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
         },
     },
