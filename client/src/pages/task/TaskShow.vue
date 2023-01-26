@@ -260,11 +260,12 @@ export default {
             formData.append('taskId',this.task.id);
             formData.append('admin_user',this.loginUserId);
             formData.append('commentId',commentId);
+            formData.append('fromComment',true);
 
             console.log(...formData.entries());
 
             axios.post(
-                '/api/file/fileUpload',
+                '/api/file/fromComment/upload',
                 formData
             )
             .then(response =>{

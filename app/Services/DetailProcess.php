@@ -15,7 +15,7 @@ class DetailProcess
     /**
      * ファイル保存処理
      */
-    public static function fileStore($request, $commentId)
+    public static function fileStore($request, $commentId, $fromComment)
     {
         $files = request()->file('files');
 
@@ -42,18 +42,28 @@ class DetailProcess
                         'comment_id' => $commentId
                     ]);
                 } else {
-                    $comment = Comment::create([
-                        'task_id' => $taskId,
-                        'user_id' => $admin_user,
-                        'text' => 'ファイルアップロードしました。'
-                    ]);
-                    $fileInstance = File::create([          //DBに保存
-                        'task_id' => $taskId,
-                        'user_id' => $admin_user,
-                        'file_name' => $fileNameToStore,
-                        'original_name' => $originalName,
-                        'comment_id' => $comment->id
-                    ]);
+                    if($fromComment) {
+                        $comment = Comment::create([
+                            'task_id' => $taskId,
+                            'user_id' => $admin_user,
+                            'text' => 'ファイルアップロードしました。'
+                        ]);
+                        $fileInstance = File::create([          //DBに保存
+                            'task_id' => $taskId,
+                            'user_id' => $admin_user,
+                            'file_name' => $fileNameToStore,
+                            'original_name' => $originalName,
+                            'comment_id' => $comment->id
+                        ]);
+                    } else {
+                        $fileInstance = File::create([          //DBに保存
+                            'task_id' => $taskId,
+                            'user_id' => $admin_user,
+                            'file_name' => $fileNameToStore,
+                            'original_name' => $originalName,
+                        ]);
+                    }
+
                 }
 
                 // /storage/appディレクトリの該当フォルダに保存
