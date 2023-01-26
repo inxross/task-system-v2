@@ -81,7 +81,9 @@
                             <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                         </select>
                         <br>
-                        <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
+                        <input class="mt-2 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
+                        <br>
+                        <button class="btn btn-dark mt-2" @click="submit">投稿する</button>
                         <!--{{commentForWorkUser}}-->
                         <!--{{commentForStatus}}-->
                 </div>
@@ -102,6 +104,7 @@ export default {
             commentForStatus: '',
             workUserId: '0',
             statusId: '0',
+            filesInfo: [],
         };
     },
     computed: {
@@ -179,6 +182,13 @@ export default {
                 params: { id: id}
             })
         },
+        submit() {
+            if(this.filesInfo.length != 0) {
+                this.fileUpload();
+            }
+
+            this.commentSubmit();
+        },
         commentSubmit() {
             axios.post(
                 '/api/comment/store',
@@ -225,7 +235,39 @@ export default {
             link.href = url
             link.target = "_blank"
             link.click()
-        }
+        },
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
+        },
+        fileUpload(){
+            const formData = new FormData();
+
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
+
+            formData.append('taskId',this.task.id);
+            formData.append('admin_user',this.loginUserId);
+
+            console.log(...formData.entries());
+
+            axios.post(
+                '/api/file/fileUpload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+/*
+                this.$router.push({
+                    name: "TaskIndex"
+                });
+ */
+            });
+        },
     },
 
 }
