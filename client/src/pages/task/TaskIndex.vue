@@ -25,7 +25,8 @@
                     <td>{{task.status ? task.status.name : ''}}</td>
                     <td>{{task.name}}</td>
                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
-                    <td>{{task.deadline}}</td>
+                    <td v-if="task.deadline">{{task.deadline | moment}}</td>
+                    <td v-else></td>
                     <td>{{task.updated_at | moment }}</td>
                 </tr>
                 </tbody>
