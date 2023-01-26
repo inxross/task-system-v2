@@ -62,6 +62,11 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{comment.text}}</p>
+                                <template v-if="comment.files">
+                                    <div v-for="file in comment.files" :key="file.id">
+                                        <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
@@ -80,6 +85,8 @@
                             <option value="0" selected>ステータス変更</option>
                             <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                         </select>
+                        <br>
+                        <input class="mt-2 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
                         <br>
                         <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
                         <!--{{commentForWorkUser}}-->
@@ -102,6 +109,8 @@ export default {
             commentForStatus: '',
             workUserId: '0',
             statusId: '0',
+            filesInfo: [],
+            commentId: ''
         };
     },
     computed: {
@@ -189,7 +198,7 @@ export default {
                     user_id: this.loginUserId,
                     task_id: this.task.id,
                     workUserId: this.workUserId,
-                    statusId: this.statusId
+                    statusId: this.statusId,
                 }
             )
             .then(response => {
@@ -197,10 +206,23 @@ export default {
                 this.comment = '';
                 this.commentForWorkUser = '';
                 this.commentForStatus = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+                this.commentId = response.data.commentId;
+                //this.$router.go({path: this.$router.currentRoute.path, force: true});
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
             })
             .catch(error => {
-                console.log(error);
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    console.log(error);
+                }
+
+                //console.log(error);
             });
         },
         fileDownload(file) {
@@ -225,7 +247,38 @@ export default {
             link.href = url
             link.target = "_blank"
             link.click()
-        }
+        },
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
+        },
+        fileUpload(commentId){
+            const formData = new FormData();
+
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
+
+            formData.append('taskId',this.task.id);
+            formData.append('admin_user',this.loginUserId);
+            formData.append('commentId',commentId);
+            formData.append('fromComment',true);
+
+            console.log(...formData.entries());
+
+            axios.post(
+                '/api/file/fromComment/upload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            });
+        },
     },
 
 }
