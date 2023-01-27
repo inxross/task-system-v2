@@ -77,6 +77,9 @@
 
                         ファイル<br>
                         <input type="file" name="file" multiple v-on:change="fileSelected">
+                        <div v-for="fileInfo in filesInfo" :key="fileInfo.id">
+                                {{ fileInfo.name}}
+                        </div>
                         <ul></ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
@@ -243,7 +246,7 @@ export default {
             console.log(...formData.entries());
 
             axios.post(
-                '/api/file/fileUpload',
+                '/api/file/upload',
                 formData
             )
             .then(response =>{

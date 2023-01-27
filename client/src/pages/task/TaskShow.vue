@@ -31,16 +31,22 @@
                                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                                     <td>{{task.admin_user ? task.admin_user.name : ''}}</td>
                                     <td>{{task.category ? task.category.name : ''}}</td>
-                                    <td>{{task.deadline}}</td>
+                                    <td v-if="task.deadline">{{task.deadline | moment}}</td>
+                                    <td v-else></td>
                                     <td>{{task.progress}}</td>
                                     <td>{{task.man_hours}}</td>
-                                    <td>{{task.updated_at}}</td>
+                                    <td>{{task.updated_at | moment_HH_mm}}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="card-body">
                                 <p class="card-text newline">{{task.description}}</p>
+
+                                <div v-for="file in files" :key="file.id">
+                                    <a href="javaScript:void(0)" @click="fileDownload(file)">{{ file.original_name}}</a>
+                                </div>
+
                             </div>
                             <div class="card-footer text-muted">
                                 <button class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
@@ -52,11 +58,17 @@
                         <br>
                         <!--{{comments}}-->
                         <div class="card" v-for="comment in comments" :key="comment.id">
-                            <div class="card-header text-muted">
-                                投稿者：{{ comment.user ? comment.user.name : ''}}
+                            <div class="card-header text-muted" style="position: relative;">
+                                <div style="display: inline;">投稿者：{{ comment.user ? comment.user.name : ''}}</div>
+                                <div style="display: inline; position: absolute; right: 15px;">{{ comment.created_at | moment_HH_mm }}</div>
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{comment.text}}</p>
+                                <template v-if="comment.files">
+                                    <div v-for="file in comment.files" :key="file.id">
+                                        <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
@@ -76,6 +88,8 @@
                             <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                         </select>
                         <br>
+                        <input class="mt-2 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
+                        <br>
                         <button class="btn btn-dark mt-2" @click="commentSubmit">投稿する</button>
                         <!--{{commentForWorkUser}}-->
                         <!--{{commentForStatus}}-->
@@ -88,6 +102,7 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 
 export default {
     data() {
@@ -97,6 +112,8 @@ export default {
             commentForStatus: '',
             workUserId: '0',
             statusId: '0',
+            filesInfo: [],
+            commentId: ''
         };
     },
     computed: {
@@ -120,7 +137,10 @@ export default {
         },
         loginUserId() {
             return this.$store.getters.loginUser.id;
-        }
+        },
+        files() {
+            return this.$store.getters.fileList;
+        },
     },
     watch: {
         workUserId() {
@@ -155,7 +175,16 @@ export default {
         this.$store.dispatch('updateCommentList', this.$route.params.id);
         this.$store.dispatch('updateUserList');
         this.$store.dispatch('updateStatusList');
+        this.$store.dispatch('updateFileList', this.$route.params.id);
         //console.log(typeof this.$route.params.id);
+    },
+    filters: {
+        moment: function (date) {
+            return moment(date).format('YYYY/MM/DD');
+        },
+        moment_HH_mm: function (date) {
+            return moment(date).format('YYYY/MM/DD HH:mm');
+        }
     },
     methods: {
         goEdit(id) {
@@ -180,7 +209,7 @@ export default {
                     user_id: this.loginUserId,
                     task_id: this.task.id,
                     workUserId: this.workUserId,
-                    statusId: this.statusId
+                    statusId: this.statusId,
                 }
             )
             .then(response => {
@@ -188,10 +217,81 @@ export default {
                 this.comment = '';
                 this.commentForWorkUser = '';
                 this.commentForStatus = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
+
+                if(response.data.commentId) {
+                    this.commentId = response.data.commentId;
+                }
+
+                //this.$router.go({path: this.$router.currentRoute.path, force: true});
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
+            })
+            .catch(error => {
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    console.log(error);
+                }
+
+                //console.log(error);
+            });
+        },
+        fileDownload(file) {
+            const fileId = file.id;
+            axios.post(
+                '/api/file/download',
+                {
+                    file_id: fileId
+                },
+            )
+            .then(response => {
+                console.log(response);
+                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
             })
             .catch(error => {
                 console.log(error);
+            });
+        },
+        downloadByURL(url, fileName) {
+            const link = document.createElement('a')
+            link.download = `${fileName}`
+            link.href = url
+            link.target = "_blank"
+            link.click()
+        },
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
+        },
+        fileUpload(commentId){
+            const formData = new FormData();
+
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
+
+            formData.append('taskId',this.task.id);
+            formData.append('admin_user',this.loginUserId);
+            formData.append('commentId',commentId);
+            formData.append('fromComment',true);
+
+            console.log(...formData.entries());
+
+            axios.post(
+                '/api/file/fromComment/upload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
         },
     },

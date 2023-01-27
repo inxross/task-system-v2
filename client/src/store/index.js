@@ -7,6 +7,7 @@ import user from "./modules/user.js";
 import status from "./modules/status.js";
 import comment from "./modules/comment.js";
 import loginUser from "./modules/loginUser.js";
+import file from "./modules/file.js";
 
 Vue.use(Vuex);
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         user,
         status,
         comment,
-        loginUser
+        loginUser,
+        file
     }
 });
