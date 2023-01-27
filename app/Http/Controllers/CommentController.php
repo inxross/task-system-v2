@@ -50,6 +50,10 @@ class CommentController extends Controller
             ]);
 
             $commentId = $comment->id;
+
+            return response()->json([
+                'commentId' => $commentId,
+            ]);
         }
 
         if(request('commentForWorkUser')) {
@@ -86,9 +90,7 @@ class CommentController extends Controller
             $task->save();
         }
 
-        return response()->json([
-            'commentId' => $commentId,
-        ]);
+
     }
 
     /**

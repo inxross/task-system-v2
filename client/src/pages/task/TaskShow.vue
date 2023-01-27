@@ -217,7 +217,11 @@ export default {
                 this.comment = '';
                 this.commentForWorkUser = '';
                 this.commentForStatus = '';
-                this.commentId = response.data.commentId;
+
+                if(response.data.commentId) {
+                    this.commentId = response.data.commentId;
+                }
+
                 //this.$router.go({path: this.$router.currentRoute.path, force: true});
                 if(this.filesInfo.length != 0) {
                     this.fileUpload(this.commentId);
