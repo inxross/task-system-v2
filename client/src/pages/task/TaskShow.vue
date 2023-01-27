@@ -58,8 +58,9 @@
                         <br>
                         <!--{{comments}}-->
                         <div class="card" v-for="comment in comments" :key="comment.id">
-                            <div class="card-header text-muted">
-                                投稿者：{{ comment.user ? comment.user.name : ''}}
+                            <div class="card-header text-muted" style="position: relative;">
+                                <div style="display: inline;">投稿者：{{ comment.user ? comment.user.name : ''}}</div>
+                                <div style="display: inline; position: absolute; right: 15px;">{{ comment.created_at | moment_HH_mm }}</div>
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{comment.text}}</p>
