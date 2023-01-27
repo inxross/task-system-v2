@@ -31,10 +31,11 @@
                                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                                     <td>{{task.admin_user ? task.admin_user.name : ''}}</td>
                                     <td>{{task.category ? task.category.name : ''}}</td>
-                                    <td>{{task.deadline}}</td>
+                                    <td v-if="task.deadline">{{task.deadline | moment}}</td>
+                                    <td v-else></td>
                                     <td>{{task.progress}}</td>
                                     <td>{{task.man_hours}}</td>
-                                    <td>{{task.updated_at}}</td>
+                                    <td>{{task.updated_at | moment_HH_mm}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -100,6 +101,7 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 
 export default {
     data() {
@@ -174,6 +176,14 @@ export default {
         this.$store.dispatch('updateStatusList');
         this.$store.dispatch('updateFileList', this.$route.params.id);
         //console.log(typeof this.$route.params.id);
+    },
+    filters: {
+        moment: function (date) {
+            return moment(date).format('YYYY/MM/DD');
+        },
+        moment_HH_mm: function (date) {
+            return moment(date).format('YYYY/MM/DD HH:mm');
+        }
     },
     methods: {
         goEdit(id) {
