@@ -44,7 +44,8 @@
                                 <p class="card-text newline">{{task.description}}</p>
 
                                 <div v-for="file in files" :key="file.id">
-                                    <a href="javaScript:void(0)" @click="fileDownload(file)">{{ file.original_name}}</a>
+                                    <a v-if="loginUserId == file.user_id" @click="fileDestroy(file.id)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
+                                    <a href="javaScript:void(0)" @click="fileDownload(file)" class="mx-1">{{ file.original_name}}</a>
                                 </div>
 
                             </div>
@@ -294,6 +295,21 @@ export default {
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
         },
+        fileDestroy(fileId){
+            axios.post(
+                '/api/file/destroy',
+                {
+                    file_id: fileId
+                },
+            )
+            .then(response => {
+                console.log(response);
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
     },
 
 }
