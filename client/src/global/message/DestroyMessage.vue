@@ -1,6 +1,6 @@
 <template>
-    <div>
-        ファイルを削除しました。
+    <div class="deleted">
+        <p>ファイルを削除しました。</p>
     </div>
 </template>
 
@@ -11,5 +11,13 @@ export default {
 </script>
 
 <style>
-
+.deleted {
+    background-color: red;
+}
+.deleted p {
+    text-align: center;
+    color: white;
+    padding-top: 15px;
+    font-weight: bold;
+}
 </style>

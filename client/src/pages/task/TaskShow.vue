@@ -322,14 +322,16 @@ export default {
                 //this.destroyMessage = true;
             })
             .then(() => {
-                this.destroyMessage = true;
+                this.destroyMessageFunction();
             })
             .catch(error => {
                 console.log(error);
             });
-
-
         },
+        destroyMessageFunction() {
+            this.destroyMessage = true;
+        },
+/*
         createDeleteMessage(name) {
             const description = document.getElementById(this.idForDescription);
             console.log(description);
@@ -338,6 +340,7 @@ export default {
             p.textContent = `${name}が削除されました。`;
             description.appendChild(p);
         },
+ */
     },
 
 }
