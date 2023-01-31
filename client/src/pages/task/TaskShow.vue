@@ -64,7 +64,7 @@
                                 <div style="display: inline; position: absolute; right: 15px;">{{ comment.created_at | moment_HH_mm }}</div>
                             </div>
                             <div class="card-body">
-                                <p class="card-text">{{comment.text}}</p>
+                                <p class="card-text newline">{{comment.text}}</p>
                                 <template v-if="comment.files">
                                     <div v-for="file in comment.files" :key="file.id">
                                         <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
