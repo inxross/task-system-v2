@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card border-info">
+            <div class="card border-dark">
                 <div class="card-header">ログイン画面</div>
 
                 <div class="card-body">
@@ -16,7 +16,7 @@
                             <li class="errorMessage">{{loginErrorMessage}}</li>
                         </ul>
                         <br>
-                        <button class="btn btn-info" @click="login">ログイン</button>
+                        <button class="btn btn-dark" @click="login">ログイン</button>
                         <!--{{loginData}}-->
                 </div>
             </div>
