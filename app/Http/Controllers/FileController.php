@@ -146,6 +146,8 @@ class FileController extends Controller
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
+        $originalName = $file->original_name;
+
         $filePath = 'public/file/' . $file->file_name;
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
@@ -155,7 +157,8 @@ class FileController extends Controller
 
         return response()->json([
             'message' => 'ファイル削除を実施しました。',
-            'status' => 'OK'
+            'status' => 'OK',
+            'originalName' => $originalName
         ]);
     }
 }
