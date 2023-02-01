@@ -4,7 +4,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">タスク詳細画面</div>
-
+                <template v-if="destroyMessage">
+                    <destroy-message/>
+                </template>
                 <div class="card-body">
                         <div class="card">
                             <div class="card-header">
@@ -40,11 +42,11 @@
                                 </tbody>
                             </table>
 
-                            <div class="card-body">
+                            <div :id="idForDescription" class="card-body">
                                 <p class="card-text newline">{{task.description}}</p>
 
                                 <div v-for="file in files" :key="file.id">
-                                    <a v-if="loginUserId == file.user_id" @click="fileDestroy(file.id)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
+                                    <a v-if="loginUserId == file.user_id" @click="fileDestroy(file)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
                                     <a href="javaScript:void(0)" @click="fileDownload(file)" class="mx-1">{{ file.original_name}}</a>
                                 </div>
 
@@ -104,8 +106,12 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import DestroyMessage from "../../global/message/DestroyMessage.vue";
 
 export default {
+    components: {
+        'destroy-message': DestroyMessage
+    },
     data() {
         return {
             comment: '',
@@ -114,7 +120,8 @@ export default {
             workUserId: '0',
             statusId: '0',
             filesInfo: [],
-            commentId: ''
+            commentId: '',
+            destroyMessage: false
         };
     },
     computed: {
@@ -142,6 +149,10 @@ export default {
         files() {
             return this.$store.getters.fileList;
         },
+        idForDescription() {
+            const taskId = this.$route.params.id
+            return `description_${taskId}`;
+        }
     },
     watch: {
         workUserId() {
@@ -295,7 +306,9 @@ export default {
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
             });
         },
-        fileDestroy(fileId){
+        fileDestroy(file){
+            const fileId = file.id;
+
             axios.post(
                 '/api/file/destroy',
                 {
@@ -304,12 +317,30 @@ export default {
             )
             .then(response => {
                 console.log(response);
+                //this.createDeleteMessage(response.data.originalName);
                 this.$router.go({path: this.$router.currentRoute.path, force: true});
+                //this.destroyMessage = true;
+            })
+            .then(() => {
+                this.destroyMessageFunction();
             })
             .catch(error => {
                 console.log(error);
             });
-        }
+        },
+        destroyMessageFunction() {
+            this.destroyMessage = true;
+        },
+/*
+        createDeleteMessage(name) {
+            const description = document.getElementById(this.idForDescription);
+            console.log(description);
+            const p = document.createElement('p');
+            p.classList.add('deleted');
+            p.textContent = `${name}が削除されました。`;
+            description.appendChild(p);
+        },
+ */
     },
 
 }
