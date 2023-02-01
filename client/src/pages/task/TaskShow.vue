@@ -273,7 +273,7 @@ export default {
                     responseType: "blob",
                 }
             )
-            .then(async (response) => {
+            .then((response) => {
                 console.log(response);
 
                 const name = this.fileOriginalName;
