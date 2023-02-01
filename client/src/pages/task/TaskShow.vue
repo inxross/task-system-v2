@@ -48,7 +48,7 @@
                                 <div v-for="file in files" :key="file.id">
 
                                     <a v-if="loginUserId == file.user_id" @click="fileDestroy(file)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
-                                    <a href="javaScript:void(0)" @click="fileDownload(file)" class="mx-1">{{ file.original_name}}</a>
+                                    <a href="javaScript:void(0)" @click="getMimeType(file)" class="mx-1">{{ file.original_name}}</a>
 
                                 </div>
 
@@ -71,7 +71,7 @@
                                 <p class="card-text newline">{{comment.text}}</p>
                                 <template v-if="comment.files">
                                     <div v-for="file in comment.files" :key="file.id">
-                                        <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
+                                        <a href="javaScript:void(0)" @click="getMimeType(file)">{{file.original_name}}</a>
                                     </div>
                                 </template>
                             </div>
@@ -126,7 +126,7 @@ export default {
             commentId: '',
             mimeType: '',
             fileId: '',
-            fileOriginalName: ''
+            fileOriginalName: '',
             destroyMessage: false
         };
     },
