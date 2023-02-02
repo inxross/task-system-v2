@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\File;
 use App\Services\DetailProcess;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -114,8 +115,24 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $originalName = $file->original_name;
+
+        $filePath = 'public/file/' . $file->file_name;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        }
+
+        $file->delete();
+
+        return response()->json([
+            'message' => 'ファイル削除を実施しました。',
+            'status' => 'OK',
+            'originalName' => $originalName
+        ]);
     }
 }
