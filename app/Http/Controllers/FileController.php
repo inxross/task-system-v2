@@ -41,17 +41,43 @@ class FileController extends Controller
 
     }
 
+    public function getMimeType(Request $request){
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $filePath = 'public/file/' . $file->file_name;
+        $mimeType = Storage::mimeType($filePath);
+        //$headers = [['Content-Type' => $mimeType]];
+
+        return response()->json([
+            'mimeType' => $mimeType,
+        ]);
+
+    }
+
     public function downLoad(Request $request){
 
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
+        $filePath = 'public/file/' . $file->file_name;
+
+        $original_name = $file->original_name;
+
+        $mimeType = Storage::mimeType($filePath);
+        $headers = [['Content-Type' => $mimeType]];
+
+        if (Storage::exists($filePath)) {
+            return Storage::download($filePath, $original_name, $headers);
+        }
+/*
         $pathToFile = 'http://vue-laravel-separately-tasksystem.localdomain/storage/file/'.$file->file_name;
         return response()->json([
             'pathToFile' => $pathToFile,
             'file' => $file
         ]);
-
+ */
     }
 
     /**

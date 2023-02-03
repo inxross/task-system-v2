@@ -46,8 +46,10 @@
                                 <p class="card-text newline">{{task.description}}</p>
 
                                 <div v-for="file in files" :key="file.id">
+
                                     <a v-if="loginUserId == file.user_id" @click="fileDestroy(file)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
-                                    <a href="javaScript:void(0)" @click="fileDownload(file)" class="mx-1">{{ file.original_name}}</a>
+                                    <a href="javaScript:void(0)" @click="getMimeType(file)" class="mx-1">{{ file.original_name}}</a>
+
                                 </div>
 
                             </div>
@@ -69,7 +71,7 @@
                                 <p class="card-text newline">{{comment.text}}</p>
                                 <template v-if="comment.files">
                                     <div v-for="file in comment.files" :key="file.id">
-                                        <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
+                                        <a href="javaScript:void(0)" @click="getMimeType(file)">{{file.original_name}}</a>
                                     </div>
                                 </template>
                             </div>
@@ -106,6 +108,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import { saveAs } from 'file-saver';
 import DestroyMessage from "../../global/message/DestroyMessage.vue";
 
 export default {
@@ -121,6 +124,9 @@ export default {
             statusId: '0',
             filesInfo: [],
             commentId: '',
+            mimeType: '',
+            fileId: '',
+            fileOriginalName: '',
             destroyMessage: false
         };
     },
@@ -252,17 +258,41 @@ export default {
                 //console.log(error);
             });
         },
-        fileDownload(file) {
-            const fileId = file.id;
+        getMimeType(file) {
+            this.fileId = file.id;
+            this.fileOriginalName = file.original_name;
+
+            axios.post(
+                '/api/file/getMimeType',
+                {
+                    file_id: this.fileId
+                },
+            )
+            .then((response) => {
+                console.log(response);
+                this.mimeType = response.data.mimeType;
+                this.fileDownload();
+            })
+        },
+        fileDownload() {
+            //const fileId = file.id;
+
             axios.post(
                 '/api/file/download',
                 {
-                    file_id: fileId
+                    file_id: this.fileId
                 },
+                {
+                    responseType: "blob",
+                }
             )
-            .then(response => {
+            .then((response) => {
                 console.log(response);
-                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+
+                const name = this.fileOriginalName;
+                const blob = new Blob([response.data], { type: this.mimeType });
+                saveAs(blob, name);
+
             })
             .catch(error => {
                 console.log(error);
